@@ -10,6 +10,8 @@ Live demo placeholder:
 https://jeanmicheldewez-ux.github.io/midi2sound/
 ```
 
+<img width="703" height="455" alt="sh-md2snd" src="https://github.com/user-attachments/assets/498f8c36-76b3-4dbe-96f8-eafe6478723e" />
+
 ## Features
 
 - Browser-based sound engine using the existing `ultrasound.js` library.
