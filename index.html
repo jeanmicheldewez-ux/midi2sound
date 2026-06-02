@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>midi2sound - Browser MIDI Sound Engine</title>
+  <meta name="description" content="Browser sound engine for Web MIDI, synth tracks, presets and interactive music apps.">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #111315;
+      --panel: #1d2125;
+      --line: #3a4149;
+      --text: #f5f6f7;
+      --muted: #aab2bb;
+      --accent: #ff7a18;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    main {
+      width: min(960px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 56px 0;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(36px, 7vw, 72px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    p {
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.55;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 28px 0;
+    }
+
+    a.button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 700;
+      background: var(--panel);
+    }
+
+    a.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #1b1208;
+    }
+
+    section {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+
+    ul {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px 18px;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    code {
+      color: #ffd5ad;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>midi2sound</h1>
+    <p>Browser sound engine for Web MIDI, synth tracks, presets and interactive music apps.</p>
+    <p>
+      This public entry point focuses on the reusable browser sound engine extracted from Ultragear.
+      The working demo uses <code>ultrasound.js</code>, Tone.js, NexusUI, Web MIDI input, keyboard input,
+      multiple synth tracks, effects, and template import/export.
+    </p>
+
+    <div class="actions">
+      <a class="button primary" href="sound-demo.html">Open Sound Demo</a>
+      <a class="button" href="docs/SOUND_ENGINE_OVERVIEW.md">Read Docs</a>
+    </div>
+
+    <section>
+      <h2>Demo Features</h2>
+      <ul>
+        <li>Browser synth engine</li>
+        <li>Web MIDI note input</li>
+        <li>NexusUI piano</li>
+        <li>Computer keyboard notes</li>
+        <li>Multiple tracks and synths</li>
+        <li>Tone.js effects</li>
+        <li>Preset/template JSON import and export</li>
+        <li>Reusable adapter API for other apps</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
