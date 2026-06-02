@@ -4,11 +4,9 @@ Browser sound engine for Web MIDI, synth tracks, presets and interactive music a
 
 `midi2sound` is a reusable browser sound-engine project extracted from the Ultragear sound work. It demonstrates how `ultrasound.js` can run independently from the old ESP32 controller interface and can be reused by browser instruments, MIDI tools, gesture controllers, and interactive music apps.
 
-Live demo placeholder:
+## Live Demo
 
-```text
-https://jeanmicheldewez-ux.github.io/midi2sound/
-```
+[Open the midi2sound demo](https://jeanmicheldewez-ux.github.io/midi2sound/)
 
 <img width="703" height="455" alt="sh-md2snd" src="https://github.com/user-attachments/assets/498f8c36-76b3-4dbe-96f8-eafe6478723e" />
 
