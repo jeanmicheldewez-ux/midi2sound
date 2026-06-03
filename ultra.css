@@ -13,12 +13,10 @@
     background-color: transparent !important;
 }
 
-/* Garder la flèche de la souris lors du survol */
 * {
     cursor: default;
 }
 
-/* Changer le curseur lors du survol */
 :hover {
     cursor: pointer;
 }
@@ -36,10 +34,9 @@
 	}
 	
 *:not([class]) {
-    /* background: linear-gradient(to bottom right, rgba(170, 170, 170, 0.5), rgba(119, 119, 119, 0.5)); */
-    /* border-radius: 8px; */
+    
+    
 }
-
 
   .transparent-overlay {
             position: fixed;
@@ -47,11 +44,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(055, 255, 255, 0.00); /* Mostly transparent white background */
-            z-index: 9999999; /* High z-index to ensure it is above other elements */
-            pointer-events: none; /* Allow mouse events to pass through */
+            background: rgba(055, 255, 255, 0.00); 
+            z-index: 9999999; 
+            pointer-events: none; 
         }
-
 
 	
     .custom-cursor {
@@ -61,17 +57,17 @@
       background-color: orange;
       border: 2px solid white;
       border-radius: 50%;
-      mix-blend-mode: difference; /* Pour que le blanc apparaisse bien sur toutes les couleurs */
-      pointer-events: none; /* Le curseur personnalisé ne doit pas interférer avec les clics */
-      transform: translate(-50%, -50%); /* Centre le curseur sur le pointeur de la souris */
-      transition: transform 0.2s ease-out; /* Ajoute une transition pour une animation douce */
+      mix-blend-mode: difference; 
+      pointer-events: none; 
+      transform: translate(-50%, -50%); 
+      transition: transform 0.2s ease-out; 
 	   z-index: 88000;
 	   
 	}
 
-    /* Ajoutez des classes spécifiques pour changer l'apparence en fonction de l'état du curseur */
+    
     .custom-cursor:hover {
-      transform: translate(-50%, -50%) scale(1.5); /* Par exemple, agrandit le curseur au survol */
+      transform: translate(-50%, -50%) scale(1.5); 
     }	
 		
 		
@@ -111,16 +107,16 @@
 	}
 	
   selek:hover option:checked {
-  background-color: #FF4400; /* Couleur orange */
-  color: #000; /* Couleur du texte (optionnelle) */
+  background-color: #FF4400; 
+  color: #000; 
 }
 	
 .btt1 {
   display: inline-block;  
   
-  color: #fff; /* Couleur du texte */
-  background-color: #777; /* Couleur de fond grise par défaut */
-  transition: background-color 0.3s ease; /* Ajouter une transition pour un changement en douceur */
+  color: #fff; 
+  background-color: #777; 
+  transition: background-color 0.3s ease; 
   border-radius:8px;
   padding:2px;
   font-weight:bold;
@@ -130,7 +126,7 @@
 }
 
 .btt1:hover {
-  background-color:#FF4400; /* Couleur de fond jaune au survol */
+  background-color:#FF4400; 
    
 }
 
@@ -139,17 +135,16 @@
   }
   
   .btt4:hover {
-  color:#F40; /* Couleur de fond jaune au survol */
+  color:#F40; 
    
 }
 
-
 .field1 {
-  display: inline-block; /* Aligner les divs horizontalement */
-  margin: 0 10px; /* Ajouter de la marge entre les divs */
-  color: #333; /* Couleur du texte */
-  background-color: #888; /* Couleur de fond grise par défaut */
-  transition: background-color 0.5s ease; /* Ajouter une transition pour un changement en douceur */
+  display: inline-block; 
+  margin: 0 10px; 
+  color: #333; 
+  background-color: #888; 
+  transition: background-color 0.5s ease; 
   border-radius:8px;
   padding:0px;
   font-size:18px;
@@ -158,10 +153,8 @@
 	   autocomplete="off" required>
 }
 
-
-
 .field1:hover {
-  background-color:#BBB; /* Couleur de fond jaune au survol */
+  background-color:#BBB; 
    
 }
 
@@ -174,8 +167,8 @@ padding:6px;
 .reltx
  {
   display: flex;
-  flex-wrap: wrap; /* Wrap elements if they overflow the container */
-  justify-content: space-around; /* Distribute elements evenly with spacing */
+  flex-wrap: wrap; 
+  justify-content: space-around; 
 }
  
 .balle {
@@ -197,7 +190,6 @@ padding:6px;
    mix-blend-mode: difference;
 }
 
-
 .underbend {
     position:absolute;
 	
@@ -215,7 +207,7 @@ padding:6px;
 
  
 .ball {
-  position: relative; /* Can be optional */
+  position: relative; 
   background: #FFF;
   color: black;
   font-weight: bold;
@@ -225,12 +217,12 @@ padding:6px;
   padding-right: 2px;
   border: 5px solid #888;
   border-radius: 12px;
-  /* display: block;   */
-  /* width: 94px;     */
-  /* height: 64px;     */
+  
+  
+  
   overflow: hidden;
   user-select: none;
-  clear: both;   /* Clear any floating elements before */
+  clear: both;   
   
 
 }
@@ -242,11 +234,10 @@ padding:6px;
 	z-index:20;
 }
 
-
 .bartran
 {
 
-	    /* display:none;   */
+	    
    z-index :-8888;
  display:block;
 	   position:absolute;  
@@ -256,7 +247,6 @@ padding:6px;
 	width:4px;
 	height:100%;
 }
-
 
 .barloop
 {
@@ -269,17 +259,16 @@ padding:6px;
 	width:300px;
 	height:100%;
 	
-    background: linear-gradient(to bottom right, rgba(255, 10, 0, 0.2), rgba(235, 0, 10, 0.15)); /* Transparent red gradient */
-    border-left: 2px solid rgba(255, 192, 203, 0.5); /* Light pink left border with 0.7 opacity */
-    border-right: 2px solid rgba(255, 192, 203, 0.5); /* Light pink right border with 0.7 opacity */
+    background: linear-gradient(to bottom right, rgba(255, 10, 0, 0.2), rgba(235, 0, 10, 0.15)); 
+    border-left: 2px solid rgba(255, 192, 203, 0.5); 
+    border-right: 2px solid rgba(255, 192, 203, 0.5); 
 
 }
-
 
 .canv
 {
 
-	  /* display:none;  */
+	  
      z-index :- 9999;
      display:block;
 	 position:absolute;   
@@ -307,12 +296,11 @@ display: inline-block;
   border: 3px solid #FFffff;
   border-radius:5px;
 
-  /*background: linear-gradient(to bottom, #ff4400 40%, orange 6%);*/
+  
   
    user-select: none;
 
 }
-
 
 .ball4
 {
@@ -357,34 +345,32 @@ display: inline-block;
 
  
 ::-webkit-scrollbar {
-  width: 12px; /* Largeur de la barre de défilement */
+  width: 12px; 
    height: 12px;
-  background-color: #000; /* Fond noir */
+  background-color: #000; 
 }
 
  
 ::-webkit-scrollbar-button:start {
-  background-color: #FF4400; /* Couleur orange pour le bouton */
+  background-color: #FF4400; 
 }
 
  
 ::-webkit-scrollbar-button:end {
-  background-color: #FF4400; /* Couleur orange pour le bouton */
+  background-color: #FF4400; 
 }
 
  
 ::-webkit-scrollbar-track {
-  background-color: #000; /* Fond noir */
+  background-color: #000; 
 }
 
-/* Styles pour la poignée de défilement (thumb) */
 ::-webkit-scrollbar-thumb {
-  background-color: #FF4400; /* Couleur orange pour la poignée */
+  background-color: #FF4400; 
 }
 
-/* Styles pour la poignée de défilement au survol */
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #FF4400; /* Couleur orange plus claire au survol */
+  background-color: #FF4400; 
 }
 
 .skal
@@ -400,8 +386,6 @@ display: inline-block;
 
 }
 
-
-/* Target the entire slider track */
 .orange-slider {
   -webkit-appearance: none;
   width: 30%;
@@ -411,7 +395,6 @@ display: inline-block;
   outline: none;
 }
 
-/* Target the slider thumb/button */
 .orange-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -422,7 +405,6 @@ display: inline-block;
   cursor: pointer;
 }
 
-/* Remove default styles for Firefox */
 .orange-slider::-moz-range-thumb {
   width: 15px;
   height: 20px;
@@ -431,7 +413,6 @@ display: inline-block;
   cursor: pointer;
 }
 
-/* Remove default styles for Edge */
 .orange-slider::-ms-thumb {
   width: 15px;
   height: 20px;
@@ -440,11 +421,9 @@ display: inline-block;
   cursor: pointer;
 }
 
-/* Remove default outline for all browsers */
 .orange-slider:focus {
   outline: none;
 }
-
 
     .main-container {
       display: flex;
@@ -487,7 +466,6 @@ width:100%;
 left:0px;
 }
 
-
         #consoleOutput {
             position: fixed;
             bottom: 0;
@@ -495,22 +473,22 @@ left:0px;
             max-height: 75%;
 			font-size:12px;
             width: 100%;
-            overflow-y: auto; /* Enable vertical scrolling if content exceeds the height */
+            overflow-y: auto; 
             background-color: #000; 
 			color:white;
             padding: 10px;  
         }
 
 .outline-text {
-    color: black; /* Set the color of the text */
+    color: black; 
     text-shadow: 
         -1px -1px 0 #FF9550,  
          1px -1px 0 #FF5510,
         -1px  1px 0 #FF5510,
          1px  1px 0 #FF5510;  
 		 
-   user-select: none; /* Prevent text selection */
-    cursor: default; /* Set cursor to default */
+   user-select: none; 
+    cursor: default; 
  
     pointer-events: auto;
 }
@@ -525,7 +503,6 @@ left:0px;
 	
 }
 
-
 .bar
 {
 	 background: repeating-radial-gradient(
@@ -537,7 +514,6 @@ left:0px;
 	);
 	opacity:0.0;
 }
-
 
 .num
 {
@@ -552,22 +528,12 @@ left:0px;
 	
 }
 
+    
+    
+    
 
+    
 
-/* //////////// */
-/* *************************************************** */
-/* ***************************************************** */
-
-
-/* html, body { */
-    /* margin: 0; */
-    /* padding: 0; */
-    /* width: 100%; */
-/* } */
-
-/* * { */
-    /* box-sizing: border-box; */
-/* } */
  
 #installBtn
 {
@@ -591,9 +557,9 @@ left:0px;
  }
  
 hr {
-  border: 0;              /* Removes the default border */
-  height: 1px;            /* Sets the height of the line */
-  background-color: #FF4400; /* Sets the color to orange */
+  border: 0;              
+  height: 1px;            
+  background-color: #FF4400; 
 }
  
 
@@ -623,19 +589,14 @@ hr {
 
   #soundbar {
     display: inline-block;  
-    color: #111; /* Text color */
+    color: #111; 
     
  
     border-radius: 8px;
     padding: 2px;
-    /* margin: 0 10px;  */
+    
     margin-top: 4px;   
   }
-
-/*.btt1:hover {
-  background-color:#AA3;  Couleur de fond jaune au survol 
-   
-}*/
 
 .btx
 {
@@ -680,7 +641,7 @@ outline:none;
     }
     td {
       border: 0px solid #ddd;
-      position: relative; /* This makes the td a positioning context */
+      position: relative; 
     }
     .levelline {
  
@@ -688,10 +649,10 @@ outline:none;
       height: 4px;
   border:solid  linear-gradient(135deg, #3a3a3a 0%, #8c8cac 50%, #c0c0c0 100%) 1px;
       background:#0078D4;
-      width: 95%; /* Width of the bar as a percentage of the parent td */
-      top: 50%; /* Center the bar vertically within the td */
-      left: 0; /* Align the bar to the left */
-      transform: translateY(-50%); /* Adjust the vertical alignment */
+      width: 95%; 
+      top: 50%; 
+      left: 0; 
+      transform: translateY(-50%); 
     }
 
  
@@ -713,10 +674,10 @@ height:10px;
 }
  
 .btnPlus {
-    position: fixed;  /* Places it at the bottom of the content */
-    bottom: -8px;  /* Stick to the bottom of the parent */
-    left: 14px;  /* Center it */
-    transform: translateX(-50%);  /* Center correction */
+    position: fixed;  
+    bottom: -8px;  
+    left: 14px;  
+    transform: translateX(-50%);  
     
     display: inline-block;
     padding: 4px 4px;
@@ -729,10 +690,8 @@ height:10px;
     cursor: pointer;
     text-align: center;
     line-height: 1;
-    margin-bottom: 10px; /* Some space from bottom */
+    margin-bottom: 10px; 
 }
-
-
 
  .mytracks {
     position: fixed;
@@ -741,53 +700,34 @@ height:10px;
     right: 0;
     bottom: 0;
     max-width: 100%;
-    max-height: calc(100% - 45px); /* Adjust height to fit */
-    overflow-x: hidden; /* Enable horizontal scrolling */
-    overflow-y: auto; /* Enable vertical scrolling */
-    display: flex; /* Flexbox for layout */
-    flex-direction: column; /* Stacks children vertically */
-    align-items: center; /* Center-aligns children */
-    background: #111; /* Background color */
-    padding-bottom:100px; /* Prevents last element from being hidden */
- /* background:red; */
+    max-height: calc(100% - 45px); 
+    overflow-x: hidden; 
+    overflow-y: auto; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    background: #111; 
+    padding-bottom:100px; 
+ 
  
 
 }
 
+    
+    
+    
+    
 
-
-
-
-/* .mytracks { */
-    /* position: fixed; */
-    /* left: 0; */
-    /* top: 5px; */
-    /* right: 0; /* Fix this */ */
-    /* bottom: 0; /* Fix this */ */
-    /* max-width: 100%; */
-
-    /* max-height: calc(100% - 45px);   */
-    /* overflow-x: auto; */
-    /* overflow-y: auto; */
+    
+    
+    
  
-/* } */
 
-/* #mytracks { */
-    /* width: calc(100% - 2px); */
-    /* min-height: 100vh; /* Ensures it grows */ */
-    /* position: relative; /* Makes `.btnPlus` position correctly */ */
-    /* overflow-y: auto; /* Enables scrolling */ */
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* align-items: center; */
-    /* background: #111; */
-    /* padding-bottom: 80px; /* Prevents last element from being hidden */ */
-/* max-height: calc( 100% - 150px ); */
-/* } */
-
-
-
-
+    
+    
+    
+    
+    
 
 .target {
   border: 0px solid #FF4400;
@@ -796,14 +736,14 @@ height:10px;
   margin-bottom:5px;
   margin-top:15px;
   margin-right:8px;
-  position: relative; /* Needed for absolute positioning of children */
-  overflow: visible; /* Allow label to overflow */
-  /* border:solid red 33px; */
+  position: relative; 
+  overflow: visible; 
+  
 }
 
 . -label {
   position: absolute;
-  top: -15px; /* Move up outside the container */
+  top: -15px; 
   left: 0;
   width: 100%;
   
@@ -820,19 +760,18 @@ height:10px;
 
 .target-synth {
   position: absolute;
-  top: -40px; /* Move up outside the container */
+  top: -40px; 
   left: 10px;
   width: 100%;
 color:#111;
 font-weight:bold;
-/* background:black; */
+
 font-size:15px;
 width:auto;
  
 height:auto;
 text-shadow:  2px 2px 2px #eee;
 }
-
 
 .target-label
 {
@@ -842,14 +781,9 @@ position:absolute;
 top:0px;
 color:#111;
 font-weight:bold;
-/* background:black; */
+
 font-size:15px;
 width:auto;
-/* max-width:100%; */
-/* max-width:57px; */
-/* height:17px; */
-/* overflow:hidden; */
-/* margin-left:-15px; */
 
 height:auto;
 text-shadow:  2px 2px 2px #eee;
@@ -864,14 +798,13 @@ position:absolute;
 top:0px;
 color:#111;
 font-weight:bold;
-/* background:black; */
+
 font-size:15px;
 width:auto;
-/* max-width:100%; */
+
 max-width:50px;
 height:17px;
 overflow:hidden;
-/* margin-left:-15px; */
 
 height:auto;
 text-shadow:  2px 2px 2px #eee;
@@ -890,12 +823,11 @@ margin-top:10px;
 min-width:15px;
 }
 
-
 .numTrack
 {
 position:absolute;
 top:5px; left:22px;
-/* width:15px; */
+
 color:white;
 background:#FF4400;
 font-size:16px;
@@ -922,7 +854,6 @@ position:fixed; top:0; left:0;
     background-repeat: no-repeat;
 
 }
-
 
 #menuSynth {
   position: fixed;
@@ -984,7 +915,6 @@ z-index:90;
 
 }
 
-
 .piano
 {
 
@@ -1014,8 +944,8 @@ z-index:80;
 }
 
 .onetrack {
-    /* min-width: 100%; */
-    /* max-width: 100%; */
+    
+    
 width:100%;
     overflow-x: auto;
     overflow-y: hidden;
@@ -1025,7 +955,7 @@ width:100%;
     position: relative;
     margin-bottom: 10px;
 
-min-height: 172px;   /* Prevents shrinking */
+min-height: 172px;   
     max-height: 172px; 
 padding-right:40px;
     height:172px;
@@ -1039,11 +969,10 @@ display: flex;
     height: 100%;
 
    gap: 8px; 
-  /* flex-wrap: wrap; /* Allows wrapping if elements exceed container width */ 
+   
   margin-right:6px;
   
 }
-
 
 .btnPlusTone {
     position: absolute;  
@@ -1085,17 +1014,14 @@ padding-bottom:6px;
 
  
 
-
 .font40 {
    
 font-size:40px;
 }  
 
-
 .myFX {
  
     display: inline-grid;
-  /* display: grid; /* Use block-level grid */ */
 
     grid-template-columns: repeat(auto-fill, 50px);
     grid-template-rows: repeat(2, 50px);
@@ -1110,16 +1036,12 @@ padding-left:5px;
     min-width: min-content;
     width: auto;
 
-  /* min-width: 0 !important; /* Disable content-based min-width */ */
-  /* width: 100%; /* Allow explicit width control */ */
-
 margin-left:5px;
 margin-right:5px;
 text-align:center;
 border-radius:5px;
 
-/* justify-content: center; */
-    /* align-items: center; */
+    
 }
 
 .labelfx
@@ -1131,7 +1053,7 @@ top:0px;
  
 color:#111;
 font-weight:bold;
-/* background:black; */
+
 font-size:15px;
 width:auto;
 max-width:90px;
@@ -1143,8 +1065,6 @@ text-shadow:  2px 2px 2px #eee;
 
 }
 
-
-
 .labelfx2
 {
 
@@ -1154,28 +1074,24 @@ top:0px;
 
 color:#FF4400;
 font-weight:bold;
-/* background:black; */
+
 font-size:18px;
 width:auto;
 margin-left:15px;
 height:auto;
-/* text-shadow:  2px 2px 2px #eee; */
 
 }
 .fx {
-    /* width: 50px; */
-    /* height: 50px; */
-    /* border: solid white 0px; */
+    
+    
+    
 text-align:center;
 }
 
-
-
-
 .fx-label {
-/* font-family: "Helvetica Narrow"; */
+
   position: relative;
-  top: -2px; /* Move up outside the container */
+  top: -2px; 
   left: -8px;
   width: calc(100% + 8px);
   overflow:hidden;
@@ -1186,7 +1102,7 @@ text-align:center;
   font-size: 10px;
   color:#FFF;
   text-align: center;
-  pointer-events: none; /* Optional: prevent label from blocking interactions */
+  pointer-events: none; 
 }
 
 .btRemove
@@ -1198,7 +1114,7 @@ width:12px;
 font-size:12px;
 padding:1px 1px;
 color:black;
-/* background:#FF4400; */
+
 font-weight:bold;
 border:solid black 2px;
 border-radius:5px;
@@ -1229,41 +1145,31 @@ padding-left:4px;
   gap: 8px; 
 }
 
-
 .XYarea
 {
 display:block; 
 margin-top:8px;
-/* width:120px; */
-/* height:120px; */
-/* background:grey; */
+
 border-radius:12px;
 }
 
-
-
-
-
-/* Style for Chrome, Safari, Edge, and Opera */
 input[type="range"] {
-  -webkit-appearance: none; /* Remove default styling */
- // width: 300px; /* Adjust width */
-  height: 8px; /* Height of the slider track */
-  background: #551500; /* Grey track color */
-  border-radius: 5px; /* Rounded track edges */
-  outline: none; /* Remove outline */
+  -webkit-appearance: none; 
+  height: 8px; 
+  background: #551500; 
+  border-radius: 5px; 
+  outline: none; 
 }
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 15px; /* Width of thumb */
-  height: 20px; /* Height of thumb */
-  background: #ff4400; /* Thumb color */
-  border-radius: 20%; /* Make thumb circular */
+  width: 15px; 
+  height: 20px; 
+  background: #ff4400; 
+  border-radius: 20%; 
   cursor: pointer;
 }
 
-/* Style for Firefox */
 input[type="range"]::-moz-range-thumb {
   width: 15px;
   height: 20px;
@@ -1276,7 +1182,6 @@ input[type="range"]::-moz-range-track {
   background: #551500;
 }
 
-/* Style for Internet Explorer */
 input[type="range"]::-ms-thumb {
   width: 15px;
   height: 20px;
@@ -1288,14 +1193,13 @@ input[type="range"]::-ms-track {
   background:#551500;
 }
 
-
  
 select {
-  appearance: none; /* Remove default browser styling */
-  background-color: black; /* Black background */
-  color: #ff4400; /* Font color */
-  border: 1px solid #ff4400; /* Border color matching the arrow */
-  border-radius: 2px; /* Rounded corners */
+  appearance: none; 
+  background-color: black; 
+  color: #ff4400; 
+  border: 1px solid #ff4400; 
+  border-radius: 2px; 
  
   padding-left:3px;
   padding-right:3px;
@@ -1304,99 +1208,90 @@ select {
 
  
 select::after {
-  content: "▼"; /* Unicode for a downward arrow */
+  content: "▼"; 
   position: absolute;
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  color: #ff4400; /* Arrow color */
+  color: #ff4400; 
 }
 
-/* Wrapper to position the select and pseudo-element correctly */
 .select-wrapper {
   position: relative;
 }
 
  
 
-
-/* Styling for numeric input */
 input[type="number"] {
-  background-color: black; /* Black background */
-  color: #ff4400; /* Font color */
-  border: 1px solid #ff4400; /* Border color */
-  border-radius: 2px; /* Rounded corners */
+  background-color: black; 
+  color: #ff4400; 
+  border: 1px solid #ff4400; 
+  border-radius: 2px; 
   padding-left: 3px;
   padding-right: 3px;
   font-size: 16px;
 }
 
-/* Styling for spinner arrows in WebKit browsers (Chrome, Safari, Edge, Opera) */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
-  appearance: auto; /* Keep the spinner visible */
-  background-color: black; /* Black background for arrows */
-  color: #ff4400; /* Arrow color */
+  appearance: auto; 
+  background-color: black; 
+  color: #ff4400; 
 }
 
-/* Remove default spinner appearance in Firefox */
 input[type="number"] {
-  -moz-appearance: textfield; /* Remove default spinner appearance in Firefox */
+  -moz-appearance: textfield; 
 }
 
-
-/* Styling for checkboxes */
 input[type="checkbox"] {
-  appearance: none; /* Remove default browser styling */
-  width: 20px; /* Set width of checkbox */
-  height: 20px; /* Set height of checkbox */
-  background-color: black; /* Black background */
-  border: 1px solid #ff4400; /* Border color */
-  border-radius: 4px; /* Rounded corners for checkbox */
+  appearance: none; 
+  width: 20px; 
+  height: 20px; 
+  background-color: black; 
+  border: 1px solid #ff4400; 
+  border-radius: 4px; 
 }
 
 input[type="checkbox"]:checked {
-  background-color: #ff4400; /* Background color when checked */
+  background-color: #ff4400; 
 }
 
 input[type="checkbox"]:checked::before {
-  /* content: "✔"; /* Checkmark symbol when checked */ */
-  color: black; /* Checkmark color */
-  /* font-size: 16px; */
+  color: black; 
+  
   display: flex;
   justify-content: center;
   align-items: center;
   padding-top:5px;
 }
 
-/* Wrapper for select (unchanged) */
 .select-wrapper {
   position: relative;
 }
 
 select {
-  appearance: none; /* Remove default browser styling */
-  background-color: black; /* Black background */
-  color: #ff4400; /* Font color */
-  border: 1px solid #ff4400; /* Border color matching the arrow */
-  border-radius: 2px; /* Rounded corners */
+  appearance: none; 
+  background-color: black; 
+  color: #ff4400; 
+  border: 1px solid #ff4400; 
+  border-radius: 2px; 
 
   padding-left:3px;
   padding-right:3px;
 }
 
 select::after {
-  content: "▼"; /* Unicode for a downward arrow */
+  content: "▼"; 
   position: absolute;
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  color: #ff4400; /* Arrow color */
+  color: #ff4400; 
 }
 
 input[type="text"] {
-  color: #FF4400; /* Text color */
-  background-color: #000000; /* Background color */
+  color: #FF4400; 
+  background-color: #000000; 
 }
 
 #extra1
@@ -1437,18 +1332,15 @@ input[type="text"] {
 }
 
 .minispl {
-  display: inline-block;     /* ← This makes width work */
+  display: inline-block;     
   width: 20px;
-  height: 20px;              /* optional: fixed height too */
+  height: 20px;              
   text-align: center;
-  line-height: 20px;         /* vertically centers text */
+  line-height: 20px;         
   background: #444;
   margin: 0  1.5px;
-  border-radius: 3px;        /* nice rounded corners */
+  border-radius: 3px;        
 }
-
-
-
 
 .buttsample
 {

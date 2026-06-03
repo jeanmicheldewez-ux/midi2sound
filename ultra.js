@@ -1,4 +1,3 @@
-//  var soundUrl ="1713432807_SFHH_95_-groove-loops-120.mp3"; 
 var soundUrl ="";  // amenbrk.mp3
 
 var bpm = 120;
@@ -13,7 +12,6 @@ var armnn = [0,0,0,0];
 var mpe = [0,0,0,1];
 
 var scriptUrl = "sound-js.js";
-
 
 var msSpeed = 20;
 
@@ -30,15 +28,12 @@ var bigcc=[];
 
 var numTrack = 0;
 
-
 for (let i = 0; i <= 3; i++) {
 	bigcc[i] = []; 
 	for (let l = 0; l <= 3; l++) {
 		bigcc[i][l] = []; 
 		 for (let k = 0; k <= 23; k++) {
 			bigcc[i][l][k] = [];
-			//drum1[k]=16.00;
-			//drum2[k]=32.00;
 			 for (let m = 0; m <= 16; m++) {
 				 let rnd = Math.floor(Math.random() * 12700);
 				rnd = rnd / 100;
@@ -47,17 +42,6 @@ for (let i = 0; i <= 3; i++) {
 		}	 
 	} 
 } 
-// extra ALL cc 4 : vol ,
-//              5 : len , 
-// bass : type1, type2, feedback , freq filt sidechain 
- //remove wooble 
-// arpeggio : realfm type + modulation type, panplug, FeedbackDelay
-// drone : type synth, type fmsynth + mudulation,  2x factor portamento
-
-
-//drum eq bass, sidechain freq filt + ratio, set comp 
-
-
 
 var label = [];
 
@@ -75,11 +59,9 @@ labelExtra[1] =[ "oscBs","oscMd","panFq","panWt","panOc","panSt"];
 labelExtra[2] =[ "osc1 ","osc 2","oscMd","rvbSz"];
 labelExtra[3] =[ "eqLo ","eqHi ","chnFr","compR"];
 
-
 var currentnote=[];
 
 var mycc=[];
-
 
 var resend =[0,0,0,0,0]; 
 var resendcc =[0,0,0,0,0]; 
@@ -100,10 +82,8 @@ var routeGear=[0,0,0,0,0];
  
 var listScale=[];
 
-
 let arrCCmin = [];
 let arrCCmax = [];
-
 
 for (let l = 0; l <= 3; l++) {
     chan[l] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
@@ -123,7 +103,6 @@ for (let l = 0; l <= 3; l++) {
 	mycc[l] = []; 
  
      for (let k = 0; k <= 3; k++) {
-		// currentnote[l][k]=[0,0,0,0];
         listScale[l][k] = [];
 		allCC[l][k] = [(k*4)+2,(k*4)+3,(k*4)+4,(k*4)+5];
 		lockCC[l][k] = [0,0,0,0];
@@ -134,13 +113,11 @@ for (let l = 0; l <= 3; l++) {
     }
 }
 
-
 var exBall = 1;
 
 var toolNow=1;
 
 var playChannel=[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-
 
  var pageHeight;
  var cm1 = 0;
@@ -159,12 +136,8 @@ var playChannel=[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
  
      getPageHeight();
 
-
-
-
 function processMidiUSB( dt1,dt2,dt3 )
 {
-	//console.log( dt1,dt2,dt3 );
 	let gg = gearN -1;
 	
 	let idx = 0;
@@ -179,8 +152,6 @@ function processMidiUSB( dt1,dt2,dt3 )
 	
 	let tt = chan[gearN-1].indexOf(dt1-idx);
 	tt = tt + 1;
-	// console.log( chan[gearN-1] )
-	// console.log( dt1-idx )
 	
 	if(idx != 0)processMidi(dt1,dt2,dt3,tt,gg);
 	
@@ -188,166 +159,20 @@ function processMidiUSB( dt1,dt2,dt3 )
 }
  
 
-// *************************************************
-//************WS **************************
-//********************************************
-
-// let myWs = "wss://ultragear1.local";
-
-// const ws = new WebSocket(myWs);
-
-
-/////////////////////////////////////
-//ws.onopen = () => ws.send('note_on:60,127'); // Send MIDI-like message
-// ws.onmessage = (event) => console.log(event.data); // Receive from ESP32
-
-
- // function sendMidi(type, channel, dataArr) {
-  // ws.send(JSON.stringify({
-    // type: type,
-    // channel: channel,
-    // data: dataArr
-  // }));
-// }
-
-
-
-
-
-// ******************************
-// ****** socket  **************
-// **************************
-
-
-
-// var connectionOptions = {
-  // "force new connection": true,
-  // "reconnectionAttempts": "Infinity",
-  // "timeout": 7000,
-  // "transports": ['websocket']
-// };
-
-// var socket = io.connect('wss://speeddevis.fr:9748', connectionOptions);
-
-
-// socket.on('askpreset', function(data){	
-
-  // console.log("auto send preset");  
-  // console.log( thisGear );
-
-
-// });
-
-
-
-
-
-// socket.on('kiki', function(data){	
-
-  // document.getElementById ("calicm").innerHTML = data.cm;
-
-// });
-
     
 
-// socket.on('midi', function(data){	
-
-     // var dt = data.midi;
   	
 
- // sendMIDIMessage(dt[0],	 dt[1],	dt[2]);
   
- // let gg = gearCode.indexOf(data.room);
 
- // processMidi(dt[0],	 dt[1],	dt[2], data.tool,gg);
- // window.postMessage(dt, '*'); // midi from chrome tab to tab
-// }); 
-
-
-// socket.on('pong', function(data){	
-
-
-	// var  pong = new Date();
-	// var ping = (pong  - pingtime )/2;
-
-  // console.log("ping ms : " + ping.toFixed(0) );  
-  // return; 
-	// if(ping<700) document.getElementById("pingms").innerHTML =  ping.toFixed(0);
-
-    // var getgear =  gearCode.indexOf(data.codemachine);
 		
- // if(getgear != -1)document.getElementById("grx"+(getgear + 1)).style.background="#DDD";
  
- // if(getgear != -1)document.getElementById("gr"+(getgear + 1)).style.background="#aaa";
- 
-// });
-
-
-// ws.onmessage = function(event) {
-  // let msg;
-  // try {
-    // msg = JSON.parse(event.data);
-  // } catch (e) {
-    // console.error("Invalid JSON:", event.data);
-    // return;
-  // }
-  // if (!msg.event) return;
-
-  // switch (msg.event) {
-    // case 'askpreset':
-      // console.log("auto send preset");
-      // console.log(thisGear);
-      // break;
-
-    // case 'kiki':
-      // document.getElementById("calicm").innerHTML = msg.cm;
-      // break;
-
-    // case 'midi':
-      // var dt = msg.midi;
-      // sendMIDIMessage(dt[0], dt[1], dt[2]);
-      // let gg = gearCode.indexOf(msg.room);
-      // processMidi(dt[0], dt[1], dt[2], msg.tool, gg);
-      // window.postMessage(dt, '*');
-      // break;
-
-    // case 'pong':
-      // var pong = new Date();
-      // var ping = (pong - pingtime) / 2;
-      // console.log("ping ms : " + ping.toFixed(0));
  
 
-      // var getgear = gearCode.indexOf(msg.codemachine);
-      // if (getgear != -1) document.getElementById("grx" + (getgear + 1)).style.background = "#DDD";
-      // if (getgear != -1) document.getElementById("gr" + (getgear + 1)).style.background = "#aaa";
-      // break;
-  // }
-// };
-
-
-
-
-
-
-/////////////// 	SOCKET END    //////////////////
-
-
-// document.addEventListener('touchmove', function(event) {
-   // if (event.touches && event.touches.length >= 2) {
-    // if (!(event.target instanceof HTMLInputElement && event.target.type === 'range')) {
-       // if (Math.abs(event.touches[0].clientX - event.touches[1].clientX) > Math.abs(event.touches[0].clientY - event.touches[1].clientY)) {
-           // if (!isDescendantOfMenuContent(event.target)) {
-                // event.preventDefault();  
-            // }
-          // } 
-		 // }
-    // }
-// }, { passive: false });
-
+ 
 
 function processMidi(dt1,dt2,dt3,tt,gg)
 {
-	//console.log(dt1,dt2,dt3,tt,gg);
 	
 	 let vv=0;
 	 let nn = 0;
@@ -373,25 +198,19 @@ function processMidi(dt1,dt2,dt3,tt,gg)
 		if( libsound == 1) 
 		{
 			
-		//	console.log( listScale[gg] [vv-1] + " stop",gg,vv-1,nn,dt2);
 			stopsound(gg,vv-1,nn,dt2);
 			
 		}	
 		
-	//	if(liblux == 1)recordLux(0,0);
 		
 		document.getElementById ("ball" + tt).style.borderColor="#888";
-		// document.getElementById ("numset").innerHTML=" "+tt+" ";
-       // settool = tt-1;	
 	  
 	 }	 
 	 else if(dt1<160)
 	{
-		//gg = gearCode.indexOf(data.room);
 		vv = tt;
 		
 		 
- // console.log(gg,vv-1,dt2);
 		nn=listScale[gg][vv-1].indexOf(dt2);
 
 		
@@ -421,7 +240,6 @@ function processMidi(dt1,dt2,dt3,tt,gg)
 			  else document.getElementById ( (vv)+"skl"+i ).style.border = "solid blue 0px";    
 			}			
 		
-										//data.tool
 		document.getElementById ("ball" +tt ).style.borderColor="gold";
 
 		
@@ -432,14 +250,12 @@ function processMidi(dt1,dt2,dt3,tt,gg)
 		var goodgear =  gg;
 		let cc = 0; 
 		
-				//console.log(allCC[goodgear],tt-1);
 				
         if(goodgear != -1)cc = allCC[goodgear][tt - 1].indexOf( dt2);
 		
 	
 		if(goodgear != -1)mycc[goodgear][tt - 1][cc] = dt3; 
 		
-			//	console.log( currentnote[goodgear][tt-1], goodgear, tt  );
 	
 		if( libsound == 1 && nn != -1 )
 		{	
@@ -448,7 +264,6 @@ function processMidi(dt1,dt2,dt3,tt,gg)
 		 		 
 		}
 		
-		//if(liblux == 1)recordLux(dt3,1);
 	 }
 	 
 	 if(vv !=0 && vv != -1 )
@@ -459,10 +274,6 @@ function processMidi(dt1,dt2,dt3,tt,gg)
 	 }
 	 
 }		
-
-
-
-
 
 function isDescendantOfMenuContent(element) {
     var menuContentElement = document.getElementById('menucontent');
@@ -475,24 +286,19 @@ function isDescendantOfMenuContent(element) {
     return false;
 }
 
-
-
    document.addEventListener('dblclick', function(event) {
         event.preventDefault();
     });
 
-
  var el = document.getElementById('cont');
 
           el.innerHTML = '';
-
 
 for(let i = 1; i<=4; i++)
 { 
 	
 	var col ="433";
 	if (i % 2 === 0)col="544";
-	//    onclick="clickPos(event,3);" 
  el.innerHTML =	el.innerHTML+'<div id="tool'+i+'<div id="tool'+i+'"  class="barman"    style="width:100%;'+   //onclick="flipChannel('+i+',event)"
 'color:#CCC; background:#'+col+'; padding-top:22px; padding-bottom:20px; '+
 ' position:relative; z-index:10; "> <canvas class="canv"    id="cnv'+i+'"> </canvas>'+
@@ -501,12 +307,10 @@ for(let i = 1; i<=4; i++)
 '<div class="barloop"    id="bar2loop'+i+'"></div>'+
 ' <span class="ball" '+
 ' id="ball'+i+'" style="width:64px;  overflow: hidden; text-size-adjust: auto; "'+
- //  onmouseout="fastclicoff('+i+')" 
 'onmousedown="fastclic('+i+');"  ontouchstart="fastclic('+i+');" '+
 '   onmouseup="fastclicoff('+i+')"   ontouchend="fastclicoff('+i+')" >TOOL '+i+'</span>'+
  
   '<span  class="ball3" style="margin-left:6px;" id="lk'+i+'"  onclick="flipplay('+i+');"  > LOCK </span>'+
-  // '<span  class="ball3"  style="margin-right:6px;"  id="mpe'+i+'"  onclick="flipMpe('+i+');"  > MPE </span>'+
  
   
 
@@ -531,32 +335,9 @@ for(let i = 1; i<=4; i++)
 'onmouseout="selectCtrl('+i+',4,0)"'+
 ' id="'+i+'ctrl4"  " >CC 4</span></span> '+
 
-
-
-// '<span><span class="ball" '+
-// 'style="color:white; background:black;"'+
-// '  onmousedown="flipbend('+i+',1)"'+  
-// 'onmouseup="flipbend('+i+',0)" ontouchstart="flipbend('+i+',1)" '+
-// ' ontouchend="flipbend('+i+',0)" '+  //' onmouseout="flipbend('+i+',0)"' + 
-
-// ' id="bend'+i+'">'+
-// '<span class="underbend" id="underbend'+i+'" style="display:none;">""</span>BEND'+
-// '</span>'+
-
-// '<span><span class="ball" '+
-// 'style="color:white; background:black;"'+
-// '  onmousedown="flipbend('+i+',1)"'+  
-// 'onmouseup="flipbend('+i+',0)" ontouchstart="flipbend('+i+',1)" '+
-// ' ontouchend="flipbend('+i+',0)" '+
-// ' onmouseout="flipbend('+i+',0)"' + 
-// ' id="bend'+i+'">'+
-// '<span class="underbend" id="underbend'+i+'">""</span>BEND'+
-// '</span>'+
-
 '<span class="arw" style="color:#FF4400; position: absolute; right: 17px; font-size:35px; margin-top:-28px;"'+
 '  onclick="flipChannel('+i+')" '+
 ' >&#9660;</span>  '+
-
 
 		
    '<div id="chancon'+i+'" class="chancon"  style="display:none; padding:0px;">'+
@@ -564,8 +345,6 @@ for(let i = 1; i<=4; i++)
 '<div id="extrahead'+i+'" style="display:inline-block;"></div>' + 
   
  
-// '<br><div id="beatfader'+i+'" style="display: inline-block; margin-right: 10px;background:black; border-radius:5px; padding-left:3px; padding-right:3px; margin-top:10px;"'+
-// ' onclick="directchange('+i+')" >BEATFADER</div>' + 
 
   
 
@@ -579,47 +358,25 @@ for(let i = 1; i<=4; i++)
    
    '<br><div style="display: inline-block;" id="scl'+i+'"</div></div>' +
 
- // '<br><span id="cmin'+i+'" >min <span id="min-value'+i+'" style="color:#FF4400; display: inline-block;  width:60px;">10</span></span>'+
- // '&nbsp;<input  id="slmin'+i+'"style="width:150px;"  class="orange-slider"  type="range" min="0" max="300" value="0" step="1"'+
-// ' onchange="changemincm('+i+',Number(this.value))" oninput="movemincm('+i+',Number(this.value))"  style="margin-bottom:12px; ">'+
 	
-
- // ' CM <span id="cmax'+i+'" >max<span id="max-value'+i+'" style="color:#FF4400; display: inline-block;  width:60px;">10</span></span>'+
-// '<input  id="slmax'+i+'" style="width:150px;" class="orange-slider"  type="range" min="12" max="400" value="0" step="1"'+
-// ' onchange="changecm('+i+',Number(this.value))" oninput="movecm('+i+',Number(this.value))"  style="margin-bottom:12px;">'+
-
-// onclick="chooseCCminmax('+i+',1)"
 
    ' <br><div  onclick="chooseCCminmax('+i+',1)"  style="display:inline-block; margin-right: 10px; margin-top:4px;" ><select id="'+i+'ccfx1" onchange="changeCCFX('+i+',1,this.value,this.id)"  disabled style="background-color:black; color:#FF4400;"><option  value="0" > Control 1 &nbsp; </option></select></div>' +
   '<input   onclick="chooseCCminmax('+i+',1)"   type="number" onchange="changeCC('+i+',1,this.value)" id="'+i+'cc1" min="0" max="127" value="' + 1 + '" style="display: inline-block; padding: 0px; border:none; font-size:20px;  border-radius:5px; outline: none; background: black; color: inherit;" /> ' +  
-  // ' <div id="'+i+'lock1" style="display: inline-block; margin-right: 10px; background:black; border-radius:5px; padding-left:3px; padding-right:3px;" '+
-// ' onclick="flipCC('+i+',1)"> LOCK</div>' +
 
    ' | <div  onclick="chooseCCminmax('+i+',2)"  style="display: inline-block; margin-right: 10px; margin-top:4px;"><select id="'+i+'ccfx2" onchange="changeCCFX('+i+',2,this.value,this.id)" disabled  style="background-color:black; color:#FF4400;" ><option  value="0" > Control 2 &nbsp; </option></select> </div>' +
   '<input   onclick="chooseCCminmax('+i+',2)"  type="number" onchange="changeCC('+i+',2,this.value)" id="'+i+'cc2" min="0" max="127" value="' + 2 + '" style="display: inline-block; padding: 0px; border:none; font-size:20px;  border-radius:5px; outline: none; background: black; color: inherit;" /> <input onchange="minCC('+i+',this.value)"id="mincc'+i+'" value="0" min="0" max="127" type="range"/> MIN &nbsp;<span id="minccval'+i+'" style="display:inline-block;position:relative;top:14px;color:#FF4400;font-size:30px;font-weight:bold;">1</span>' +  
-  // ' <div id="'+i+'lock2" style="display: inline-block; margin-right: 10px;background:black; border-radius:5px; padding-left:3px; padding-right:3px; "'+
-// ' onclick="flipCC('+i+',2)"> LOCK</div>' +
  
    ' <br><div  onclick="chooseCCminmax('+i+',3)"  style="display: inline-block; margin-right: 10px; margin-top:4px;"><select id="'+i+'ccfx3" onchange="changeCCFX('+i+',3,this.value,this.id)" disabled  style="background-color:black; color:#FF4400;" ><option value="0" > Control 3 &nbsp; </option></select> </div>' +
   '<input  onclick="chooseCCminmax('+i+',3)"  type="number" onchange="changeCC('+i+',3,this.value)" id="'+i+'cc3" min="0" max="127" value="' + 3 + '" style="display: inline-block; padding: 0px; border:none; font-size:20px;  border-radius:5px; outline: none; background: black; color: inherit;" />' +  
-  // ' <div id="'+i+'lock3" style="display: inline-block; margin-right: 10px;background:black; border-radius:5px; padding-left:3px; padding-right:3px;"'+
-// ' onclick="flipCC('+i+',3)" > LOCK</div>' +
 
    ' | <div  onclick="chooseCCminmax('+i+',4)"  style="display: inline-block; margin-right: 10px; margin-top:4px;"><select id="'+i+'ccfx4" onchange="changeCCFX('+i+',4,this.value,this.id)" disabled  style="background-color:black; color:#FF4400;" ><option value="0" > Control 4 &nbsp; </option></select> </div>' +
   '<input  onclick="chooseCCminmax('+i+',4)"  type="number"  onchange="changeCC('+i+',4,this.value)" id="'+i+'cc4" min="0" max="127" value="' + 4 + '" style="display: inline-block; padding: 0px; border:none; font-size:20px;  border-radius:5px; outline: none; background: black; color: inherit;" /> <input  onchange="maxCC('+i+',this.value)" id="maxcc'+i+'"    value="127" min="0" max="127" type="range"/> MAX '+// <span id="maxccval'+i+'" style="color:#FF4400; font-size:40px;" >1</span>' +
-  // ' <div id="'+i+'lock4" style="display: inline-block; margin-right: 10px;background:black; border-radius:5px; padding-left:3px; padding-right:3px;"'+
-// ' onclick="flipCC('+i+',4)" > LOCK</div></span> &nbsp;' +
 
-
-// '<div  class="btt1 btt2" style="color:#F11; float:right; " onclick="sendTool(gearN,'+i+')"> SEND </div>'+
 '<br><div id="extra'+i+'" style="display:inline-block; display:none;">xx4xx</div>'+ 
 '</div>';
 	
 
-
-
 }
-
 
 for(let i = 1; i<=3; i++)
 {
@@ -635,8 +392,6 @@ for(let i = 1; i<=3; i++)
 document.getElementById('ball1').style.background="#FF4400";
 document.getElementById('ball1').style.color="#FFF";
 document.getElementById('chancon1').style.display="";
-
-
 
 for(var j = 1; j<=4; j++)
 {
@@ -681,15 +436,9 @@ el.value = j;
  
   drawScale(j,4);
  
-//	document.getElementById('lk'+1).style.color="#FF4400";	
 }
 
-
-
   
-  // ****************************
-  // *** RESIZE ****
-  // ***************************
   
       function getPageHeight() {
     
@@ -704,9 +453,6 @@ el.value = j;
 
  
  
- //  ************************************
- // ********  M I D I *****************
- //  ********************************
  
   let midiOutput;
   let midiInput;
@@ -723,8 +469,6 @@ el.value = j;
  let midi = null; // global MIDIAccess object
  
  function listMIDIDevices() {
-	// return;
-	// console.log("checking for MIDI devices...");
   navigator.requestMIDIAccess()
 	.then((midiAccess) => {
 		
@@ -734,7 +478,6 @@ el.value = j;
 	  const midiDevicesSelectin = document.getElementById('midiDevicesin');	   
 	  midiDevicesSelectin.innerHTML = ''; 
 	  
-	  //  TinyUSB MIDI
 	  let nrOutput = null;
 	  let nrInput = null;	
 	  
@@ -748,11 +491,9 @@ el.value = j;
 		  
 
 		
-		//console.log("out " + output.id +" " +output.name);
 		
 		midiDevicesSelect.appendChild(option);      
 		  
-		//  console.log(output);
 		  
 		  
 		  
@@ -764,7 +505,6 @@ el.value = j;
 		option.text = output.name;
 		option.value = output.id;
 		
-		//console.log("out " + output.id +" " +output.name);
 		
 		midiDevicesSelect.appendChild(option);         
 	  }
@@ -780,7 +520,6 @@ el.value = j;
 		option2.text = "no";
 		option2.value = "null";
 		
-
 
 	   midiAccess.inputs.forEach((input) => {
 		   
@@ -805,7 +544,6 @@ el.value = j;
 		 }
 		  
 		
-		//console.log("IN--* " + input.manufacturer +" " +input.name);
 		
 		     
 
@@ -825,7 +563,6 @@ el.value = j;
         	   
       
 	   
-	   //setTimeout(() => initializeMIDIInput(), 300); 
 
   
 	})
@@ -848,7 +585,6 @@ async function initializeMIDIOutput() {
     midiOutput = midiAccess.outputs.get(selectedDeviceId);
 
     if (!midiOutput) {
-    //  console.error('Selected MIDI OUT device not found.');
       return;
     }
 
@@ -861,7 +597,6 @@ async function initializeMIDIOutput() {
  
   
 async function initializeMIDIOutput2() {
-		// return;
   const selectedDeviceId = document.getElementById('midiDevices').value;
 
   try {
@@ -869,7 +604,6 @@ async function initializeMIDIOutput2() {
     midiOutput2 = midiAccess.outputs.get(selectedDeviceId);
 
     if (!midiOutput2) {
-     // console.error('Selected MIDI OUT device not found.');
       return;
     }
 
@@ -879,9 +613,7 @@ async function initializeMIDIOutput2() {
 
 }
 
-
 async function initializeMIDIInput() {
- // const selectedDeviceId = document.getElementById('midiDevices').value;
  if(!midiinid)return;
  
   try {
@@ -901,7 +633,6 @@ async function initializeMIDIInput() {
   
 }
 
-
 var myScale = [
     [37, 39, 40, 42, 44, 56, 61, 64],
     [56, 59, 63, 68, 70, 73, 75, 92],
@@ -909,9 +640,6 @@ var myScale = [
     [49, 52, 56, 59, 63, 68, 70, 73],
     [45, 47, 50, 52, 55, 59, 62, 65]
 ];
-
-
-
 
 function sendMIDIMessage(dt1,dt2,dt3) {
 	 
@@ -926,23 +654,15 @@ function sendMIDIMessage(dt1,dt2,dt3) {
   let idx = 0;
   
       if(dt1 < 144){
-		  // idx = dt1 - 128;
-        // dt2 = myScale[idx][dt2];
 
     	let midiMessage = [dt1, dt2, dt3];
-	//console.log(midiMessage);
     midiOutput.send(midiMessage);
-       // MIDI.sendNoteOff(dt2, dt3, dt1 - 127 );
         }
        else if(dt1 < 160  ){ 
-  ///86+
   
   
-  		  // idx = dt1 - 144;
-        // dt2 = myScale[idx][dt2];
   
 	let midiMessage = [dt1, dt2, dt3];
-//	console.log(midiMessage);
     midiOutput.send(midiMessage);
  }
  
@@ -950,15 +670,12 @@ function sendMIDIMessage(dt1,dt2,dt3) {
  {
 	 
 	let midiMessage = [dt1, dt2, dt3];
-	//console.log(midiMessage);
     midiOutput.send(midiMessage); 
 	 
  }
  
  
 }
-
-
 
 function changedevice(deviz)
 {
@@ -980,7 +697,6 @@ function changedevice(deviz)
 	}
 }
 
-
 function changedevice2(deviz) // OUT 2 routing
 {
 	console.log("changedevice 2" + deviz);
@@ -992,7 +708,6 @@ function changedevice2(deviz) // OUT 2 routing
         .then(midiAccess => {
  
           	midiOutput2 = midiAccess.outputs.get(deviz);
-			 // sendTrackNum(0);
         })
         .catch(error => {
           console.error("Error accessing MIDI devices:", error);
@@ -1000,7 +715,6 @@ function changedevice2(deviz) // OUT 2 routing
 
 	}
 }
-
 
 function changedevicein(deviz)
 {
@@ -1020,20 +734,15 @@ function changedevicein(deviz)
 			  document.getElementById("extra1").innerHTML = data;
 			  
 			  
-			  // Check for SysEx (starts with 0xF0, ends with 0xF7, length >= 3)
 			  if (data[0] === 0xF0 && data[data.length - 1] === 0xF7) {
-				// Handle SysEx message
 				processSysEx(Array.from(data));
 			    console.log("SysEx message received:", Array.from(data));
 			  } else {
-				// Handle regular MIDI messages (1-3 bytes)
-				// Defensive: check length to avoid undefined
 				const d1 = data[0] !== undefined ? data[0] : 0;
 				const d2 = data[1] !== undefined ? data[1] : 0;
 				const d3 = data[2] !== undefined ? data[2] : 0;
 				
 				if(d1 == 143)fakeSysex(d1,d2,d3);
-				//pgm change 192 !!!!!!!!!!
 				else {
 					midiSound( d1,d2,d3 );
 				 	routeMidi(d1,d2,d3);
@@ -1041,8 +750,6 @@ function changedevicein(deviz)
 				}
 				
 				
-			//	processMidiUSB(d1, d2, d3);
-				// Optionally: console.log("MIDI message received:", d1, d2, d3);
 			  }
 			};
 			
@@ -1057,7 +764,6 @@ function changedevicein(deviz)
 function routeMidi(d1,d2,d3)
 {
 	if (!midiOutput2) return;
-	//console.log( d1,d2,d3 );
 	 if(d1>=192  && d1 < 224)midiOutput2.send([ d1,d2]);
 	 else midiOutput2.send([ d1,d2,d3 ]);
 	 
@@ -1066,12 +772,9 @@ function routeMidi(d1,d2,d3)
 	
 }
 
-
 function processSysEx(sysexArray) {
-  // Do something with the SysEx data
   console.log("Received SysEx:", sysexArray);
 }
-
 
 function handleMIDIDeviceChange(event) {
 	
@@ -1079,32 +782,19 @@ function handleMIDIDeviceChange(event) {
   
 }
 
-
-
-
 function sendStream()
 {
 	console.log("stream settings");
-	//socket.emit('setting', { setvoice: 4, midi:"data"}); 
-//	ws.send(JSON.stringify({ event: 'setting', setvoice: 4, midi: "data" }));
 	
 	
 	
 	
-	// ws.send(JSON.stringify('setting', { setvoice: 4, midi:"data"})); 	
-	
-	 // ws.send(JSON.stringify({
-    // type: type,
-    // channel: channel,
-    // data: dataArr
-  // }));
 	
 	
-	// sendMidi("note_on", 1, [60, 127]);
+	
 	
 	
 }
-
 
 function flipWifi(nn)
 {
@@ -1142,9 +832,6 @@ function flipWifi(nn)
 		document.getElementById('wf2').style.display  = "none";
 		document.getElementById('pss2').style.display = "none";	
 
-
-
-
 document.getElementById('wifi1').addEventListener('click', function() {
   flipWifi(1);
 });
@@ -1152,7 +839,6 @@ document.getElementById('wifi1').addEventListener('click', function() {
 document.getElementById('wifi2').addEventListener('click', function() {
   flipWifi(2);
 });
-
 
 function flipMenu(nn)
 {	
@@ -1170,7 +856,6 @@ function flipMenu(nn)
 }
 	
 
-
 document.getElementById('menu').addEventListener('click', function() {
 	        if (isMobile()) {goFullscreen();  forceFullScreen(); }
 
@@ -1178,11 +863,6 @@ document.getElementById('menu').addEventListener('click', function() {
   else {flagMenu = 0; flipMenu(0);}
   
 });
-
-
-
-
-
 
 function sendWifi()
 {
@@ -1197,12 +877,8 @@ function sendWifi()
 	let wf = document.getElementById('wf'+nn).value;
 	let pss = document.getElementById('pss'+nn).value;	
 	
-	//socket.emit('wifi', { room:gearCode[gearN-1], nn: nn, wf:wf, pss:pss });  
-    // ws.send(JSON.stringify({ event: 'wifi', room:gearCode[gearN-1], nn: nn, wf:wf, pss:pss  }));
 
 	
-	// setCookie("wifi"+nn, wf , 1000);
-	// setCookie("wificode"+nn, pss , 1000);	
 	
 	
 	   document.getElementById('sendWifi').style.background = "red";					
@@ -1212,13 +888,9 @@ function sendWifi()
 	
 }
 
-
 document.getElementById('sendWifi').addEventListener('click', function() {
   sendWifi();
 });
-
-
-
 
 function setCookie(name, value, daysToExpire) {
   const date = new Date();
@@ -1226,10 +898,6 @@ function setCookie(name, value, daysToExpire) {
   const expires = "expires=" + date.toUTCString();
   document.cookie = name + "=" + value + ";" + expires + ";path=/";
 }
-
-
-
-// setCookie("exampleCookie", "exampleValue", 7);
 
 function getCookie(name) {
   const cookieName = name + "=";
@@ -1245,8 +913,6 @@ function getCookie(name) {
   return "";
 }
 
-
-
 function deleteCookie(cookieName) {
     document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 }
@@ -1256,44 +922,25 @@ function getCookieSizeInKB() {
   let totalSize = 0;
 
   for (const cookie of cookies) {
-	 // console.log(cookie);
     const parts = cookie.split('=');
     const key = parts[0].trim();
     const value = parts.slice(1).join('=');
     totalSize += (key.length + value.length) * 2; // Assuming each character is 2 bytes
   }
 
-  // Convert to KB and round to 2 decimal places
   const sizeInKB = (totalSize / 1024).toFixed(2);
   return sizeInKB;
 }
 
-// const cookieSizeKB = getCookieSizeInKB();
-// if (cookieSizeKB)console.log('COOKIES in KB:', cookieSizeKB);
-
-
-
-
-// const cookieValue = getCookie("exampleCookie");
-// console.log("Value of exampleCookie:", cookieValue);
-
-
-
-
-
 function flipGear(nn)
 {	 
 	
-//	socket.emit('panic', { room:gearCode[gearN-1], state: 1});  
 	
 	
-    // console.log(gearCode[gearN-1]);
 	
-	// return;
      	
 	
 	
-	//delay(200);
 	
   	document.getElementById('route').value = routeGear[nn-1];
 	
@@ -1326,35 +973,24 @@ function flipGear(nn)
   	if(resend[gearN-1] == 1)
 	{
 		document.getElementById('sdback').style.background="#FF4400";
-		//document.getElementById('sdback').innerHTML	="&nbsp;ON &nbsp; ";	
-		// socket.emit('sendback', { room:gearCode[gearN-1], sdback: 1});  
-	//	ws.send(JSON.stringify({ event: 'sendback', room:gearCode[gearN-1], sdback: 1  }));
     }
 	else
 	{
 		document.getElementById('sdback').style.background="#000";
-		//document.getElementById('sdback').innerHTML	="&nbsp;OFF&nbsp;";				
     }	
   
  
  
   document.getElementById('grc').value = gearCode[gearN-1];
   
-  //	socket.emit('joinroom', { room: myGear });  
 	
-	// ws.send(JSON.stringify({ event: 'joinroom',  room: myGear   }));
 	
-	//loadGear(nn);	
 	
 	fillTool(nn);
 	
-   //	
   
 
-
-
 }
-
 
 function setGear()
 {
@@ -1368,56 +1004,20 @@ function setGear()
 	if(getgear == -1 )
 	{
 		gearCode[gearN-1] = theval;	
-		//setCookie("lastgear", theval , 1000);	
-		//console.log("cookie lastgear saved");
 	    setCookie("gearcode"+gearN, gearCode[gearN-1] , 2000);			
     }
 	else alert( "this gear exist yet" );
 	
 	
 	
-	    // var getgear =  gearCode.indexOf(data.codemachine);
-		// console.log( getgear );
- // if(getgear != -1)document.getElementById("grx"+(getgear + 1)).style.background="#DDD";
 
 	
 }
 
-
-
-// document.getElementById('gr1').addEventListener('click', function() {
-  // flipGear(1);
-// });
-// document.getElementById('gr2').addEventListener('click', function() {
-  // flipGear(2);
-// });
-// document.getElementById('gr3').addEventListener('click', function() {
-  // flipGear(3);
-// });
-// document.getElementById('gr4').addEventListener('click', function() {
-  // flipGear(4);
-// });
-
-
-// document.getElementById('grx1').addEventListener('click', function() {
-  // flipGear(1);
-// });
-// document.getElementById('grx2').addEventListener('click', function() {
-  // flipGear(2);
-// });
-// document.getElementById('grx3').addEventListener('click', function() {
-  // flipGear(3);
-// });
-// document.getElementById('grx4').addEventListener('click', function() {
-  // flipGear(4);
-// });
-
  
-
 
 function loadCookies()
 {
-	//return;
 	
 	let cook; 
 	
@@ -1433,7 +1033,6 @@ function loadCookies()
 			 gearN = 1;
 			 myGear =  gearCode[gearN-1];
 			 document.getElementById('grc').value = cook;
-	//		ws.send(JSON.stringify({ event:'joinroom',   room: myGear }));  
 		 
 		 }	 	 
 	  }	
@@ -1462,7 +1061,6 @@ function loadCookies()
 	  }
 	  else document.getElementById("splashmidi").style.display="flex";
 	  
-   // document.getElementById("splashmidi").style.display="flex";
 
 	console.log("cookie midi " + cook);
 
@@ -1472,7 +1070,6 @@ function loadCookies()
 	cook = getCookie("lastpatch");	
 	if(cook)
 	{
-	 //thisTrack(cook);
 	}	  
 	
 	
@@ -1501,7 +1098,6 @@ function loadCookies()
 
 loadCookies();
 
-
 function getChan(nn,chann)
 {
 	 
@@ -1527,7 +1123,6 @@ console.log(nn);
 	
 }
 
-
 function createSelectNt(tlz,scn) {
   var selNt = document.createElement('select');
   selNt.classList.add('selek');
@@ -1536,14 +1131,10 @@ function createSelectNt(tlz,scn) {
    
    
    changeNote(tlz,scn,Number(this.value));
-   // sendTool(tlz);
 
   };
   
   
-  // selNt.onclick = function() {
-    // playthisnote(gearN,tlz,scn);
-  // };
   
   
   for (var i = 0; i <= 11; i++) {
@@ -1557,7 +1148,6 @@ function createSelectNt(tlz,scn) {
   selNt.value =listScale[gearN-1][tlz-1][scn-1] % 12;
 
  if( !selNt.value  ){
-	 //console.log(listScale[gearN-1][tlz-1][0] % 12);
 	 selNt.value =(listScale[gearN-1][tlz-1][0] % 12);
  }
 	 
@@ -1565,8 +1155,6 @@ function createSelectNt(tlz,scn) {
   
   
 }
-
-
 
 function createSelectOct(tlz,scn) {
 	
@@ -1579,11 +1167,9 @@ function createSelectOct(tlz,scn) {
   
   selOct.onchange = function () {  
     changeOctave(tlz,scn,Number(this.value));
-	//console.log("oct " + tlz);
 	 
 	 sendTool(gearN,tlz);
   };
-
 
  var lastval = 0;
   for (var i = 0; i <= 10; i++) {
@@ -1595,17 +1181,11 @@ function createSelectOct(tlz,scn) {
  
   var theVal = Math.floor((listScale[gearN-1][tlz-1][scn-1]) / 12) ; 
   
-   //  console.log( listScale[gearN-1][tlz-1][scn-1] , theVal   );
   
   
   	 selOct.value = theVal;
   
-  // if(theVal)selOct.value =  theVal;
-  // else
-	// {	  
    
-	 // selOct.value = Math.floor((listScale[gearN-1][tlz-1][0]-24) / 12);
-	// }
 	
 	
   
@@ -1624,7 +1204,6 @@ function drawScale(nn, lns) {
     var skalDiv = document.createElement('div');
     skalDiv.classList.add('skal');
     skalDiv.id = nn + 'skl' + i;
-   // skalDiv.textContent = '7D#';
 
     var selectContainer = document.createElement('div'); 
  
@@ -1633,17 +1212,11 @@ function drawScale(nn, lns) {
 
     skalDiv.appendChild(selectContainer);
     dcc.appendChild(skalDiv);
-	 // if (i % 8 === 0 && i !== 0) dcc.appendChild(document.createElement('br'));
   }
 }
 
 var clickCount =0;
 var  flagdbl = 0;
-
-
-
-
-
 
 function flipplay(nn)
 {
@@ -1657,7 +1230,6 @@ function flipplay(nn)
 		document.getElementById('ball'+nn).style.color="#FFF";	
 		document.getElementById('lk'+nn).style.color="#FF4400";		
 		
-        //armnn[nn-1] = setnn[nn-1];
 			let arr=[143,31 + nn,3];
 	        sendMidiUsb(arr);
 	}
@@ -1671,17 +1243,14 @@ function flipplay(nn)
 
 			let arr=[143,31 + nn,4];
 	        sendMidiUsb(arr);		
-	    //armnn[nn-1] = -1;
 		
 	}
 	
-	//ws.send(JSON.stringify({ event:'mute', room:gearCode[gearN-1],mutechan: playChannel , tool:nn}));  
  
 		
 	exBall = nn;
 
 }
-
 
 function fastclic(nn)
 {
@@ -1692,23 +1261,17 @@ function fastclic(nn)
 		document.getElementById ("numset").innerHTML= nn;
 		if( libsound == 1)showLabel(settool);
 	   var arrcopy = Array.from(playChannel);
-	  // if(playChannel[nn-1] == 0){
 		   
 	    arrcopy[nn-1] = 1;
  
 		document.getElementById('ball'+nn).style.background="#FF4400";
 		document.getElementById('ball'+nn).style.color="#FFF";
 	
-	//	ws.send(JSON.stringify({ event:'mute',  room:gearCode[gearN-1],mutechan: arrcopy, tool: nn })); 
 		
 		if(liblux == 1)fastVon[nn-1]=1;
 		
-		// for (var i = 1; i <= 4; i++) {
 
-		 // document.getElementById('ball'+i).style.boxShadow = "inset 0 0 0 0px #000";
 		
-	    // }
-		// document.getElementById('ball'+nn).style.boxShadow = "inset 0 0 0 3px #FF4400";
 		
 			let arr=[143,31 + nn,1];
 	        sendMidiUsb(arr);
@@ -1718,15 +1281,7 @@ function fastclicoff(nn)
 {
 	
  
-	 // document.getElementById('ball'+nn).style.background="#FFF";
-	 // document.getElementById('ball'+nn).style.color="#000"; 
 	 
-	// if(playChannel[nn-1] == 1){	
-	 // document.getElementById('ball'+nn).style.background="#FF4400";
-	 // document.getElementById('ball'+nn).style.color="#FFF";   }
-	// else{	
-	 // document.getElementById('ball'+nn).style.background="#FFF";
-	 // document.getElementById('ball'+nn).style.color="#000";   }
 	 
 	if(playChannel[nn-1] == 0){		
 	
@@ -1737,7 +1292,6 @@ function fastclicoff(nn)
     
 	 document.getElementById('ball'+nn).style.background="#FFF";
 	 document.getElementById('ball'+nn).style.color="#000";   
-//	ws.send(JSON.stringify({ event:'mute',  room:gearCode[gearN-1], mutechan: playChannel , tool:nn }));  
 
 			let arr=[143,31 + nn,1];
 	        sendMidiUsb(arr);
@@ -1747,14 +1301,11 @@ function fastclicoff(nn)
 	
 		
 
- 	//console.log("off : " + playChannel);
 	
 }
 
-
 function flipChannel(nn)//,event
 {
-	//console.log('chancon'+nn);
 	
 	toolNow = nn;
 	
@@ -1762,14 +1313,10 @@ function flipChannel(nn)//,event
 	
 	else document.getElementById('chancon'+nn).style.display="";
 	
-   // if(clickCount!=0)return;
 		
 		
-	// document.getElementById('chancon'+toolNow).style.display="none";				
 
-	// document.getElementById('chancon'+nn).style.display="";	
 	
-	// toolNow = nn;
 	
 	
 	
@@ -1788,7 +1335,6 @@ function changeOctave(tlz,scn,val)
 	
 }
 
-
 function changeNote(tlz,scn,val)
 {
 	let nOct = Number(document.getElementById(tlz+'octo'+scn).value);
@@ -1800,16 +1346,12 @@ function changeNote(tlz,scn,val)
 			console.log( arr );
 	    sendMidiUsb(arr) 
 	  
-  // sendTool(gearN,tlz);
 
  }
-
 
 function changespeed(val)
 {
      msSpeed = val;
-	// ws.send(JSON.stringify({ event:'speedultra',  room:gearCode[gearN-1], speed: val }));  
-  //  console.log(val);
 	
 }
 
@@ -1821,12 +1363,9 @@ function movespeed(val)
 
 }
 
-
 function changecmmax(val)
 {
 	pingtime = new Date();
-	// ws.send(JSON.stringify({ event:'calibre', room:gearCode[gearN-1], cm: val }));  
-   // console.log(val);
 	
 }
 
@@ -1838,7 +1377,6 @@ function movecmmax(val)
 
 }
 
-
 function changecm(nn,val)
 {
 	 
@@ -1846,20 +1384,14 @@ function changecm(nn,val)
 	
 }
 
-
 function changemincm(nn,val)
 {
-	//console.log(nn,val);
-	//document.getElementById("max-value"+nn).innerHTML = val;
 	
 	cMin[gearN-1][nn-1] = Number(val);
 } 
 
 function movecm(nn,val)
 {
-	// var stval =val;
-	  // if(val<10)val= stval = "00"+val;
-	// else if(val<100)stval="0"+val;	
 	document.getElementById("max-value"+nn).innerHTML = val;
 	
 	if( (cMin[gearN-1][nn-1] -12 ) >= Number(val))
@@ -1873,9 +1405,6 @@ function movecm(nn,val)
 
 function movemincm(nn,val)
 {
-	// var stval =val;
-	// if(val<10)val= stval = "00"+val;
-	// else if(val<100)stval="0"+val;	
 	document.getElementById("min-value"+nn).innerHTML =  val;	
 	
 	  if( (cMax[gearN-1][nn-1] +12 ) <= Number(val))
@@ -1891,7 +1420,6 @@ function movemincm(nn,val)
 function deletetrack() {
     var patchField = document.getElementById("thepatch");
     
-    // Toggle visibility if hidden
     if (patchField.style.display === "none") {
         patchField.style.display = "";
         document.getElementById("jmx").style.display = "";
@@ -1909,17 +1437,14 @@ function deletetrack() {
     var patchKey = 'patch_' + fieldName;
     var tracksKey = 'tracks_' + ggr;
     
-    // FIX: Removed extra parenthesis here
     if (!localStorage.getItem(patchKey)) {
         alert("Patch not found in local storage");
         return;
     }
     
     try {
-        // Delete patch data
         localStorage.removeItem(patchKey);
         
-        // Update tracks list
         var tracksData = localStorage.getItem(tracksKey);
         var tracks = [];
         if (tracksData) {
@@ -1948,7 +1473,6 @@ function deletetrack() {
             alert("Patch data deleted but not found in tracks list");
         }
         
-        // Clear UI and cookies
         patchField.value = "";
         deleteCookie("lastpatch");
         getTracks(); // Refresh tracks list
@@ -1974,7 +1498,6 @@ function savetrack()
 	if(cnt==""){alert("Please fill name for Patch");return;}
 	
 
-
 var toolsArray = [];  
 
  for (var j = 1; j <= 4; j++) 
@@ -1995,12 +1518,10 @@ var toolsArray = [];
 
 		tools.push(toolData);
 	  }
- //console.log(lockCC[j - 1]);	  
 	  toolsArray.push(tools);  
 	}
 	
 	
-
 
  var settingsData = 
  {
@@ -2035,7 +1556,6 @@ var toolsArray = [];
 	  sounds:bigcc,
 	  version: "V0.99",
 	  bpm:bpm, soundurl:soundUrl ,
-	  //len:len, vol:vol,
 	  labeltool : labeltool ,
 	  label:label
 	  	   
@@ -2053,12 +1573,7 @@ var toolsArray = [];
 	  
   }
 
-
-
-
 var jsonString = JSON.stringify(jsonData);
-
-//console.log(jsonString);	
 
 postPatch(jsonString,cnt);
 	
@@ -2066,12 +1581,10 @@ postPatch(jsonString,cnt);
 }
 
 function postPatch(jString, name) {
-    // Normalize the name (remove spaces for storage key)
     var fieldName = name.replace(/\s/g, "");
     var content = jString;
     var ggr = gearCode[gearN - 1];
     
-    // Create patch data object
     var patchData = {
         fieldName: fieldName,
         content: content,
@@ -2081,15 +1594,12 @@ function postPatch(jString, name) {
     };
     
     try {
-        // Save patch data
         localStorage.setItem('patch_' + fieldName, JSON.stringify(patchData));
         
-        // Update tracks list
         var tracksKey = 'tracks_' + ggr;
         var tracks = JSON.parse(localStorage.getItem(tracksKey) || '[]');
         var displayName = name + ".jmx";
         
-        // Add or update track in list
         var existingIndex = tracks.findIndex(t => 
             t.replace(/\.jmx$/, '').replace(/\s/g, "") === fieldName
         );
@@ -2108,32 +1618,24 @@ function postPatch(jString, name) {
     }
 }
 
-// Load tracks list for current gear
 function getTracks() {
-    // Create storage key based on current gear
     var storageKey = 'tracks_' + gearCode[gearN - 1];
     
-    // Try to load from local storage
     var storedData = localStorage.getItem(storageKey);
     
-    // Get the list element
     var listElement = document.getElementById("listtrack");
     listElement.innerHTML = ""; // Clear existing list
     
     if (storedData) {
         try {
-            // Parse the stored data
             var trackList = JSON.parse(storedData);
             
-            // Check if we have a valid array
             if (Array.isArray(trackList) && trackList.length > 0) {
-                // Populate the list
                 trackList.forEach(function(trackName) {
                     var div = document.createElement('div');
                     div.className = 'listed';
                     div.textContent = trackName;
                     
-                    // Use a closure to preserve trackName value
                     div.onclick = (function(name) {
                         return function() {
                             thisTrack(name);
@@ -2143,7 +1645,6 @@ function getTracks() {
                     listElement.appendChild(div);
                 });
             } else {
-                // Handle empty or invalid track list
                 listElement.innerHTML = 
                     "<div class='empty'>No tracks found for this gear</div>";
             }
@@ -2154,7 +1655,6 @@ function getTracks() {
                 "<div class='error'>Error loading tracks</div>";
         }
     } else {
-        // No data found in local storage
         listElement.innerHTML = 
             "<div class='empty'>No tracks found for this gear</div>";
     }
@@ -2163,9 +1663,7 @@ function loadGear(nn)
 {
 	 
 	console.log("********loadGear******");
- //return;
 	 var cookieValue = getCookie("geardata"+nn);
-	 // console.log(cookieValue);
      if (cookieValue) 
 	  {
 		  var jsonData = JSON.parse(cookieValue);
@@ -2176,7 +1674,6 @@ function loadGear(nn)
 		  cMax[nn-1] = jsonData.tools.map(tool => tool.maxcm);
 		  listScale[nn-1] = jsonData.tools.map(tool => tool.scales);
 		  
-		 // if(tool.allcc)allcc[nn-1] = jsonData.tools.map(tool => tool.allcc);
 		  if (jsonData.tools[0].allcc) {
    
 				allCC[nn - 1] = jsonData.tools.map(tool => tool.allcc);				
@@ -2193,10 +1690,8 @@ function loadGear(nn)
 	
 }
 
-
 function fillTool(nn)
 {
-	 // console.log(cMax[nn-1]);
 	 for (var i = 1; i <= 4; i++) {
 		 
 		document.getElementById("chan"+i).value=chan[nn-1][i-1];
@@ -2215,7 +1710,6 @@ function fillTool(nn)
 	      document.getElementById( i+"cc"+(j+1) ).value=Number(allCC[nn-1][i-1][j]);
 		  		
 				
-  // console.log(lockCC[nn-1][i-1][j]);				
 			if(lockCC[nn-1][i-1][j] == 1){
 			document.getElementById(i+'lock'+(j+1)).style.background="#FF4400";
 
@@ -2232,16 +1726,9 @@ function fillTool(nn)
 				document.getElementById(i+'ctrl'+(j+1)).style.background="#FFFFFF";		
 				document.getElementById(i+'ctrl'+(j+1)).style.color="#000";
 			}
-		  //lockCC
-		 // console.log( i+"cc"+(j+1) );
-		 // console.log(allCC[nn-1][i-1][j]);
 		  
 		}	
-		//console.log(nn+"cc"+i);
-		//
 	 
-		//console.log(allCC[nn-1][i-1]);
-		//console.log("fill tool " + nn );
       	 
          
 
@@ -2265,21 +1752,16 @@ function loadTrack()
 }
 
  function getTracks() {
-    // Create storage key based on current gear
     var storageKey = 'tracks_' + gearCode[gearN - 1];
     
-    // Try to load from local storage
     var storedData = localStorage.getItem(storageKey);
     
     if (storedData) {
         try {
-            // Parse the stored data (assuming it's stored as JSON)
             var trackList = JSON.parse(storedData);
             
-            // Clear existing list
             document.getElementById("listtrack").innerHTML = "";
             
-            // Populate the list
             trackList.forEach(function(trackName) {
                 var div = document.createElement('div');
                 div.className = 'listed';
@@ -2294,7 +1776,6 @@ function loadTrack()
                 "<div class='error'>Error loading tracks</div>";
         }
     } else {
-        // No data found in local storage
         document.getElementById("listtrack").innerHTML = 
             "<div class='empty'>No tracks found for this gear</div>";
         console.log('No tracks found in local storage for gear', gearCode[gearN - 1]);
@@ -2317,7 +1798,6 @@ function thisTrack(track) {
         try {
             var patchData = JSON.parse(storedData);
             
-            // Verify gear compatibility
             if (patchData.gear !== ggr) {
                 alert("This patch belongs to a different gear!");
                 return;
@@ -2335,10 +1815,8 @@ function thisTrack(track) {
     }
 }
 
-
 function parsePatch(patch)
 {
-
 
 	var jData = JSON.parse(patch);
 	console.log(jData.version);
@@ -2362,14 +1840,11 @@ function parsePatch(patch)
 		  cMax[nn-1] = jsonData.map(tool => tool.maxcm);
 		  
        if (jsonData[0].beatfader)  flagdir[nn-1] = jsonData.map(tool => tool.beatfader);	  
-		//  else flagdir[nn-1] = 0;	  
 	 
 		
 		
-			// console.log(tool.scales ) ;
 			 
 		  listScale[nn-1] = jsonData.map(tool => tool.scales);
-         // console.log(listScale[nn-1]);
 		  
 			if (jsonData[0].allcc) {
    
@@ -2397,7 +1872,6 @@ function parsePatch(patch)
 		
 	}
 
-
     if(jData.sounds)
 	{
    
@@ -2423,12 +1897,10 @@ function parsePatch(patch)
 		 
 		soundUrl = jData.soundurl;
 		
-		//console.log(soundUrl);
 	}			
     if(jData.label)
 	{
 		 label = jData.label;
-		  // console.log(label[0]);
 	}	
     if( jData.labeltool )
 	{
@@ -2441,8 +1913,6 @@ function parsePatch(patch)
 	 
 	}	
 	
-	// bpm:bpm, soundurl:soundUrl, 
-	  // len:len, vol:vol,	 
 	
 	 
 	 fillTool(gearN);
@@ -2454,15 +1924,10 @@ function parsePatch(patch)
 		 
 }	
 
-
-
 function sendTool(jj,nn)
 {
 	return;
-	//if(jj ==0)jj=gearN;
 	
-	   // console.log(jj,nn);
-     // console.log(jj,nn);
  
 
   var tl= { toolid:nn,
@@ -2497,8 +1962,6 @@ function sendTool(jj,nn)
 
      return;
 
-     // ws.send(JSON.stringify({ event:'tool', tool:jsonData }));  
-	 // ws.send(JSON.stringify({ event:'mute', room:gearCode[jj-1], mutechan: playChannel,tool:nn }));  
   
 
 }
@@ -2515,8 +1978,6 @@ function changeCC( tlz , cc , val)
 	sendMidiUsb(arr)
 	
 }
-
-
 
 function selectCtrl(tlz,cc,ison)
 {
@@ -2536,7 +1997,6 @@ function selectCtrl(tlz,cc,ison)
 	  document.getElementById ("numset").innerHTML= tlz;
 	  
       setcc=cc-1;
-     // console.log(settool,setcc);		
        if( libsound == 1 )
 	   {
 		for (let i = 0; i <= 3; i++) 
@@ -2570,7 +2030,6 @@ function selectCtrl(tlz,cc,ison)
 		document.getElementById(tlz+'ctrl'+cc).style.color="#FFFFFF";	
 		newlock = [...newlock];
 		newlock[cc - 1] = 1;
-	 //  ws.send(JSON.stringify({ event:'mutecc', room:gearCode[gearN-1], lockcc: newlock , toolid: tlz }));  
 	 
  		
 	}
@@ -2589,7 +2048,6 @@ function selectCtrl(tlz,cc,ison)
 		document.getElementById(tlz+'ctrl'+cc).style.background="#FFFFFF";		
 		document.getElementById(tlz+'ctrl'+cc).style.color="black";		
 		
-	// ws.send(JSON.stringify({ event:'mutecc', room:gearCode[gearN-1], lockcc: newlock , toolid: tlz }));  
  			
 	 }
 	}
@@ -2605,7 +2063,6 @@ function selectCtrl(tlz,cc,ison)
 function flipCC(tlz,cc)
 {
 	
-	//console.log(lockCC[tlz][cc]);
 	
 	
 		if(lockCC[gearN-1][tlz-1][cc-1] == 0){
@@ -2631,60 +2088,26 @@ function flipCC(tlz,cc)
 		document.getElementById(tlz+'ctrl'+cc).style.color="#000";
 	}
 	
-	// ws.send(JSON.stringify({ event:'mutecc', room:gearCode[gearN-1], lockcc: lockCC[gearN-1][tlz-1] , toolid: tlz }));  
  
 	
 }
 
-
-
-///////////// !!!!!!!  ABOUT SEND TO OTHER GEAR 
-
-// const io = require('socket.io')(server);
+ 
 
  
-// const userMap = new Map();
-
-// io.on('connection', (socket) => {
-    // console.log(`User connected: ${socket.id}`);
-
- 
-    // socket.on('identifySpecialUser', () => {
         
-        // userMap.set('specialUserId', socket.id);
-        // console.log(`Special user identified: ${socket.id}`);
-    // });
 
   
-    // socket.on('sendMessageToSpecialUser', (message) => {
     
-        // const specialUserId = userMap.get('specialUserId');
 
  
-        // if (specialUserId) {
-            // io.to(specialUserId).emit('message', message);
-        // } else {
-            // console.log('Special user not identified yet');
-        // }
-    // });
-
-    // socket.on('disconnect', () => {
-        // console.log(`User disconnected: ${socket.id}`);
 
       
-        // if (socket.id === userMap.get('specialUserId')) {
-            // userMap.delete('specialUserId');
-            // console.log('Special user disconnected');
-        // }
-    // });
-// });
 function sendroute()
 {
 		
 	var val = Number(document.getElementById('route').value);
 	
-	// if(val==0)ws.send(JSON.stringify({ event:'routegear', room:gearCode[gearN-1], route: "null" }));  
-   // else ws.send(JSON.stringify({ event:'routegear', room:gearCode[gearN-1], route: gearCode[val-1] }));  
  
 	
 	console.log(gearN , val);
@@ -2706,11 +2129,9 @@ function midibrowser()
 	document.getElementById('midiDevices').style.display="";
 	document.getElementById('midiDevicesin').style.display="none";	
 	
-	// ws.send(JSON.stringify({ event:'sendmidi', room:gearCode[gearN-1], state: 3}));  
 	
 
 }
-
 
 function mididin()
 {
@@ -2726,33 +2147,14 @@ function mididin()
 	document.getElementById('midiDevices').style.display="none";
 	document.getElementById('midiDevicesin').style.display="none";	
 	
-	// ws.send(JSON.stringify({ event:'sendmidi', room:gearCode[gearN-1], state: 1}));  
 	
 	
-	// if(senddin[gearN-1] == 0)
-	// {
-		// resend[gearN-1] = 1;
-		// sendback();
 		
-		// resendcc[gearN-1] = 1;
-		// sendbackcc();
 		
-		// senddin[gearN-1] = 1;
-		// document.getElementById('mididin').style.background="#FF4400";
-		// document.getElementById('mididin').innerHTML	="&nbsp;ON &nbsp; ";
 
 		
-		// socket.emit('sendmididin', { room:gearCode[gearN-1], state: 1});  
  
-    // }
-	// else
-	// {
 		
-		// senddin[gearN-1] = 0;
-		// document.getElementById('mididin').style.background="#000";
-		// document.getElementById('mididin').innerHTML	="&nbsp;OFF&nbsp;";			
-		// socket.emit('sendmididin', { room:gearCode[gearN-1], state: 0}); 		
-    // }		
 	
 	
 }
@@ -2771,20 +2173,14 @@ function midiusb()
 	document.getElementById('midiDevices').style.display="none";
 	document.getElementById('midiDevicesin').style.display="";	
 	
-//	ws.send(JSON.stringify({ event:'sendmidi',  room:gearCode[gearN-1], state: 2}));  
 	
 }
-
 
 function calibrate()
 {
 	return;
 	pingtime = new Date();
-	//ws.send(JSON.stringify({ event:'calibrate', room:gearCode[gearN-1], calibrate: 1}));  
 }
-
-
-
 
 function authmidi()
 {
@@ -2796,10 +2192,8 @@ function authmidi()
 	
 }	
 
-
 function startMidi()
 {
-	// return;
 	 document.getElementById("splashmidi").style.display="none";
  
 	 console.log("midi stazrt");
@@ -2809,9 +2203,6 @@ function startMidi()
 	 navigator.requestMIDIAccess({ sysex: true })
   .then((midiAccess) => {
 	  console.log("change ");
-  // if (midiAccess.sysexEnabled) {
-   // console.log("SYSEX OK !!");
-  // }
     midiAccess.onstatechange = handleMIDIDeviceChange;
   })
   .catch((error) => {
@@ -2820,38 +2211,9 @@ function startMidi()
 	
 }	
 
-
-
-
-// (function () {
 		
-		// var oldLog = console.log;
-		// console.log = function (message) {
-			// updateConsoleOutput('log', message);
-			// oldLog.apply(console, arguments);
-		// };
-
-		// var oldError = console.error;
-		// console.error = function (message) {
-			// updateConsoleOutput('error', message);
-			// oldError.apply(console, arguments);
-		// };
-
-		// var oldWarn = console.warn;
-		// console.warn = function (message) {
-			// updateConsoleOutput('warn', message);
-			// oldWarn.apply(console, arguments);
-		// };
 
 	  
-		// function updateConsoleOutput(type, message) {
-			// var consoleOutput = document.getElementById('consoleOutput');
-			// if (consoleOutput) {
-				// consoleOutput.innerHTML += '<p class="' + type + '">' + message + '</p>';
-				// consoleOutput.scrollTop = consoleOutput.scrollHeight;
-			// }
-		// }
-	// })();
 	
 
 	
@@ -2895,8 +2257,6 @@ function startMidi()
 	 
 			
 		}		
-
- // sendTool(gearN,nn);
 
 }	  
  
@@ -2942,7 +2302,6 @@ function startMidi()
 		}		
 
     
-	// sendTool(gearN,nn);
 
 	 
  }	
@@ -3004,8 +2363,6 @@ function startMidi()
 		
 		
 
- // sendTool(gearN,nn);
-
 }	 
  
  function octminus2(nn)
@@ -3064,7 +2421,6 @@ function startMidi()
 		}		
 
     
-	// sendTool(gearN,nn);
 
 	 
  }	
@@ -3074,7 +2430,6 @@ function startMidi()
  function changebendtrig(val)
 {
 
-	// ws.send(JSON.stringify({ event:'bendtrig', room:gearCode[gearN-1], state: val }));  
  
 	
 }
@@ -3087,12 +2442,10 @@ function movebendtrig(val)
 
 }
 
-
  
  function changebendspeed(val)
 {
 
-	//  ws.send(JSON.stringify({ event:'bendspeed', room:gearCode[gearN-1], state: val }));  
  
 	
 }
@@ -3105,7 +2458,6 @@ function movebendspeed(val)
 
 }
 
-
 function flipbend(nn,stt)
 {	 
 
@@ -3116,7 +2468,6 @@ function flipbend(nn,stt)
 	{
 		runCC =1;
 	document.getElementById ("bend" + nn).style.background="#ff4400";
-	// ws.send(JSON.stringify({ event:'bend', room:gearCode[gearN-1], state: stt, tool : nn }));  		
 	}
     else
 	{
@@ -3136,14 +2487,11 @@ function flipbend(nn,stt)
 function flipdouble(nn,stt)
 {	 
 	
-	// ws.send(JSON.stringify({ event:'noteout', room:gearCode[gearN-1], state: stt, tool : nn }));  
     if(stt == 1)document.getElementById ("double" + nn).style.background="#ff4400";
     else document.getElementById ("double" + nn).style.background="black";
 
 }
 
-
-    // Force landscape orientation
     window.addEventListener('orientationchange', function () {
         if (window.orientation === 0 || window.orientation === 180) {
        document.getElementById ("portrait").style.display="flex";
@@ -3155,13 +2503,10 @@ function flipdouble(nn,stt)
         return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
 
-    // Function to force full screen on mobile devices
-	///////// = ONLOAD !!! 
 	
 	
     function forceFullScreen() {
         if (isMobile()) {
-         //   document.documentElement.requestFullscreen();
 			
 		if (window.orientation === 0 || window.orientation === 180) {
        document.getElementById ("portrait").style.display="flex";
@@ -3172,13 +2517,10 @@ function flipdouble(nn,stt)
 		calibrate();
     }
 
-    // Force full screen on page load
     window.addEventListener('load', forceFullScreen);
 
-    // Force full screen on orientation change
     window.addEventListener('orientationchange', forceFullScreen);
 
-    // Force full screen on click (you can customize this part)
     document.documentElement.addEventListener('click', forceFullScreen);
 	
 	
@@ -3196,9 +2538,7 @@ function flipvgear(nn)
 	}	
 }	
 
-
     function playvgear(height, posY) {
-      // Calculate the percentage based on posY and height
       var percentage = (posY / height) * 100;
 	  
       console.log('Clicked at ' + percentage.toFixed(2) + '%');
@@ -3209,10 +2549,7 @@ function playthisnote(gr,tlz,nn)// for MIDI mapping ableton
 {
  setnn[tlz - 1] = nn-1;
  settool = tlz - 1;
- //setcc =  
  
-   // console.log(gr,tlz,nn);
-   // console.log(143 +  chan [gr-1][tlz-1], listScale[gr-1][tlz-1][nn-1] , 127 );   
    
     sendMIDIMessage( 143 +  chan [gr-1][tlz-1], listScale[gr-1][tlz-1] [nn-1], 127  );
     sendMIDIMessage( 127 +  chan [gr-1][tlz-1], listScale[gr-1][tlz-1] [nn-1], 0  );	
@@ -3234,8 +2571,6 @@ function directchange(nn)
 	flagdir[gearN-1][nn-1] = 0;
 	}	
 
-
-//	ws.send(JSON.stringify({ event:'directchange', room:gearCode[gearN-1], state: flagdir[gearN-1]}));   
 		
 }
 	
@@ -3245,7 +2580,6 @@ function startSplash()
 {
 	
 	
-//	Tone.start();
 	
     initsound();
    
@@ -3259,8 +2593,6 @@ function startSplash()
    
 }
 
-
-
 	
 function startsound()
 {
@@ -3272,7 +2604,6 @@ function startsound()
 
   if( libsound == 0 )
   {
- // soundScript.src = "https://cdn.jsdelivr.net/npm/tone@latest";  	  
 	  
 
   let  soundScript; 
@@ -3289,8 +2620,6 @@ function startsound()
  
  
  soundScript.src = scriptUrl+"?v=" + Date.now();
- // soundScript.id = "sound-js-script"; 
- // soundScript.onload = initializeTone; 
   document.head.appendChild(soundScript);
   
  
@@ -3301,35 +2630,16 @@ function startsound()
     
  }
 
-
-// function startsound()
-// {
-	 // initializeTone; 
-
 	
 
-  // if( libsound == 0 )
-  // {
-  // document.getElementById("soundbt").style.background="#ff4400";
-  // document.getElementById("splashsound").style.display="none";
   
-  // const soundScript = document.createElement('script');
 
  
- // soundScript.src = "sound-js.js?v=" + Date.now();
 
-
-  // document.head.appendChild(soundScript);
     
   
-   // libsound = 1;
-   // soundon = 1;
    
-  // }
-  // else flipsoundon();  
     
- // }
-
 
 function mapval(value, fromMin, fromMax, toMin, toMax) 
 {
@@ -3342,22 +2652,10 @@ function mapval(value, fromMin, fromMax, toMin, toMax)
   
 }
 
-
-// function maplog(value, minValue, maxValue, outMinValue, outMaxValue) {
 	
-     // if (value === 0) return outMinValue;  
-     // if (value === 127) return outMaxValue;  
 
 	
-    // let normalizedValue = value / 127;
   
-    // let scaledValue = Math.pow(10, normalizedValue * Math.log10(outMaxValue / outMinValue));
-
-    // let mappedValue = outMinValue + (outMaxValue - outMinValue) * (scaledValue - minValue) / (maxValue - minValue);
-
-    // return mappedValue;
-// }
-
 
 function maplog(value, minValue, maxValue, outMinValue, outMaxValue) {
     if (value === 0) return outMinValue;  
@@ -3432,7 +2730,6 @@ function parseSettings(sets)
 		document.getElementById('sdback').style.background="#FF4400";
 		document.getElementById('midiDevices').style.display="";
 	}	
-	// ws.send(JSON.stringify({ event:'sendmidi',  room:gearCode[gearN-1], state: sendmidi}));  	
 	
 	
 	document.getElementById("maxcm").value = sets.cmmax;
@@ -3447,11 +2744,6 @@ function parseSettings(sets)
 	document.getElementById("bendspeed").value = sets.bendspeed;
 	document.getElementById("bendspeedmon").innerHTML = sets.bendspeed;
 
-
-	// ws.send(JSON.stringify({ event:'calibre',  room:gearCode[gearN-1], cm: sets.cmmax }));  	
-	// ws.send(JSON.stringify({ event:'speedultra', room:gearCode[gearN-1], speed: sets.freqcc }));   		
-	// ws.send(JSON.stringify({ event:'bendtrig', room:gearCode[gearN-1], state: sets.bendtrig }));
-	// ws.send(JSON.stringify({ event:'bendspeed', room:gearCode[gearN-1], state: sets.bendspeed }));  
  
 	
 }
@@ -3460,12 +2752,10 @@ function midiToNoteName(midiNote) {
     const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
     const octave = Math.floor((midiNote - 12) / 12); // Adjust MIDI note to start from octave 0
 
-    // Get the note name from the noteNames array
     const noteName = noteNames[midiNote % 12];
 
     return noteName + (octave - 1); // Adjust octave number to start from 0
 }
-
 
 function getFrequency(note) {
 
@@ -3494,7 +2784,6 @@ function getFrequency(note) {
     }
 }
 
-
 function setccfast(cc)
 {
     setcc = cc;
@@ -3519,9 +2808,6 @@ function flipMpe(nn)
 	
 }
 
-
-
-
 function goLux()
 {
 
@@ -3531,9 +2817,7 @@ function goLux()
 	
   document.getElementById("lux").style.display="";	
 	
- //if( liblux == 0 )startVideo();
  
-//  if( liblux == 0 )startCam(); 
  
   liblux = 1;
   
@@ -3554,34 +2838,9 @@ function goLux()
   }
 }
 
-
-
-// (function() {
-  // var logDiv = document.getElementById('console-log-div');
-  // var oldLog = console.log;
-  // var oldError = console.error;
-
-  // console.log = function(...args) {
-    // oldLog.apply(console, args);
-    // var msg = args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ');
-    // var div = document.createElement('div');
-    // div.textContent = msg;
-    // logDiv.appendChild(div);
-  // };
-
-  // console.error = function(...args) {
-    // oldError.apply(console, args);
-    // var msg = args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ');
-    // var div = document.createElement('div');
-    // div.style.color = 'yellow';
-    // div.textContent = '[Error] ' + msg;
-    // logDiv.appendChild(div);
 	
 	
-	// document.getElementById("extra1").innerHTML = msg;
 	
-  // };
-// })();
 
 window.addEventListener('error', function(event) {
   var logDiv = document.getElementById('console-log-div');
@@ -3594,18 +2853,12 @@ window.addEventListener('error', function(event) {
   
 });
 
-
-
-
-
-
 function sendMidiUsb(arr)
 {	
 	if(!midiOutput)return;
 	midiOutput.send(arr);
 	
 }
-
 
 function newBpm( val  )
 {
@@ -3620,9 +2873,6 @@ function newBpm( val  )
 	sendMidiUsb(arr);
 	
 }
-
-
-
 
 function selectTrack( val, idx )
 {
@@ -3662,24 +2912,17 @@ function changeTextSelect( txt )
 {
 	console.log(txt);
 	
-	// let sel = document.getElementById("mytracklist");
-	// let idx = sel.selectedIndex;
 	
-	// sel.options[idx].textContent = (idx + 1) + " " +  "\u00A0"   + " " +  txt;
-	// sel.options[idx].value = txt;
 	
 	  
 	
 }
-
-
 
 function sendTrackNum(idx)
 {	
 	arr=[143,1,idx];
 	sendMidiUsb(arr);	
 }
-
 
 function sendTrack() // SAVE TRACK
 {
@@ -3748,14 +2991,10 @@ function fillTrackList()
  
 let lBpm = 0;
 
-
-
 function fakeSysex(dt1,dt2,dt3) // RECEIVE
 {
 	let zero = 0;
 	
-	// console.log("sysex  ");
-	 // console.log(dt1,dt2,dt3);
 	 
 	 
 	if( dt2 == 0)zero = 1;
@@ -3763,7 +3002,6 @@ function fakeSysex(dt1,dt2,dt3) // RECEIVE
 	{
 		
 		console.log("new bank : " + dt3);
-		// selectTrack("kiki", dt3, 1 )
 		
 		let idx = dt3;
 		
@@ -3782,7 +3020,6 @@ function fakeSysex(dt1,dt2,dt3) // RECEIVE
 	else document.getElementById("mytrack").value = val2;
 	
 
-	 // sendTrackNum(idx);	
 	
 	
 	let tpSound = getCookie("templateSound-" + rpl);
@@ -3810,22 +3047,11 @@ function fakeSysex(dt1,dt2,dt3) // RECEIVE
 	
 
 	
-		/////////////////////////////////////////////////////////////////
 		
-		// numTrack = dt3;
-		// document.getElementById("mytracklist").selectedIndex = dt3;
 		
-		// let val = document.getElementById("mytracklist").options[dt3].textContent;
-		// let val2 = val.replace(" \u00A0 " , "" );
 	
-      // let idx = dt3;	
-	  // let rpl = idx + 1;
-	  // rpl=rpl+"";
  
-		// if(val == rpl)document.getElementById("mytrack").value = "";
-		// else document.getElementById("mytrack").value = val2;
 		
-		// console.log("SYSEX load track : " + rpl );
 			
 	}
 	else if(dt2==2)lBpm = dt3;
@@ -3873,7 +3099,6 @@ function fakeSysex(dt1,dt2,dt3) // RECEIVE
 		
 		lnScale[gearN-1][dt2-72]=Number(dt3);
 		
-	   // drawScale(dt2-71,Number(dt3));
 		
 	}
 	else if( dt2>79 && dt2 < 112 )
@@ -3883,7 +3108,6 @@ function fakeSysex(dt1,dt2,dt3) // RECEIVE
            let i = dt2%8;
            listScale[gearN-1][c][i] = dt3;
 		   
-		  //  console.log(c+1,lnScale[gearN-1][c]);		   
 		   
 	    if(i == 7)drawScale(c+1,lnScale[gearN-1][c]);		   
 		   

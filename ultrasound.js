@@ -1,6 +1,5 @@
 // Global variables to store tracks and count
 let tracks = [];
-// let tones =[];
 let trackCount = 0;
 let actualTrack = 0;
 let flagNewTone = false;
@@ -18,68 +17,41 @@ let currentSound = null;
 
 let flagSoundOn = false;
 
-
 const waveforms = ["sine", "square", "triangle", "sawtooth", "pulse", "pwm"];
 
 const filterType = [ "lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "notch", "allpass","peaking"];
-// const filters = [
-  // { label: '⌦', value: 'lowpass' },
-  // { label: '⌧', value: 'highpass' },
-  // { label: '≋', value: 'bandpass' },
-  // { label: '∿-', value: 'lowshelf' },
-  // { label: '-∿', value: 'highshelf' },
-  // { label: '≠', value: 'notch' },
-  // { label: '◍', value: 'allpass' },
-  // { label: '⊖', value: 'peaking' }
-// ];
-// const filterSelect = new Nexus.Select('#filterType', {
-  // options: filters.map(f => f.label)
-// });
-
-// const labelToFilter = Object.fromEntries(filters.map(f => [f.label, f.value]));
-
-// filterSelect.on('change', v => {
-  // const filter = labelToFilter[v.value];
-  // console.log('Selected filter:', filter);
- 
-// });
-
 const noise = [ "white","pink","brown" ];
 
 let piano = null;
 
-
 for (let i = 1; i <= 10; i++) {
   waveforms.push(`square${i}`, `sawtooth${i}`, `triangle${i}`);
 }
-  
 
 async function initTone() {
-    // Reverse your condition logic
     if (soundInit === true) {
         return; // Exit if already initialized
     }
-    
+
     document.getElementById("soundon").checked = true;    
-    
+
     console.log("tone starting");
-    
+
     try {
         await Tone.start(); // This needs to be in an async function
         Tone.context.latencyHint = "interactive";
         Tone.context.lookAhead = 0;
-        
+
         soundInit = true; // Mark as initialized
         console.log("Tone.js initialized with low latency settings");
-        
+
         // Ensure default sample exists in local DB
         await ensureDefaultSample();
-        
+
     } catch (error) {
         console.error("Audio context initialization failed:", error);
     }
 }
-
 
 async function ensureDefaultSample() {
     try {
@@ -90,19 +62,18 @@ async function ensureDefaultSample() {
             name.toLowerCase().includes("amen_break") ||
             name === "Amen-break.wav"
         );
-        
+
         if (!hasAmenBreak) {
             console.log("Amen-break.wav not found in local DB, downloading...");
-            
-            // Fetch the sample file
+
             const response = await fetch("./Amen-break.wav");
             if (!response.ok) {
                 throw new Error(`Failed to fetch Amen-break.wav: ${response.status}`);
             }
-            
+
             const blob = await response.blob();
             const file = new File([blob], "Amen-break.wav", { type: blob.type });
-            
+
             // Save to IndexedDB
             await saveSampleToDB(file);
             console.log("Amen-break.wav saved to local database");
@@ -115,10 +86,6 @@ async function ensureDefaultSample() {
     }
 }
 
-
-
-
-
 	function isMobileDevice() {
     // Regular expression to detect mobile devices
     const mobileRegex = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|WPDesktop/i;
@@ -127,9 +94,7 @@ async function ensureDefaultSample() {
     return mobileRegex.test(navigator.userAgent);
     }
 
-
 	var mobile = isMobileDevice();
-
 
 function addPiano() 
 {
@@ -144,13 +109,9 @@ function addPiano()
 
   let mesure = document.getElementById('bars');
   let widthInPixels = mesure.clientWidth - 10;
-  // getElementById('mytracks')
-  
-  
   if( widthInPixels < 0 )return;
-  
+
   console.log( widthInPixels );
-  
 
   piano = new Nexus.Piano('#piano', {
     'size': [widthInPixels, 100],
@@ -161,17 +122,15 @@ function addPiano()
 
     piano.colorize("dark", "#882200");
 
-	 
-
  piano.on('change', function(v) {
     const midiNumber = v.note;
     const noteName = getNoteName(midiNumber);
- 
+
     if (v.state) {
         // Note pressed
         if (!activeNotesStack.includes(midiNumber)) {
             activeNotesStack.push(midiNumber);
-		
+
         }
 
         // Monophonic voice stealing
@@ -204,17 +163,14 @@ function addPiano()
         }
     }
  });
-  
+
   console.log(piano);
-  
+
 }
-
-
-
 
 function plusTrack( ) 
 {
-	 
+
 	let trackCountHere = trackCount;
 	countFX.push(0);
 
@@ -242,78 +198,63 @@ function plusTrack( )
 	});
 
 	document.getElementById('mytracks').appendChild(trackContainer);
-	
 
-  
   trackContainer.addEventListener('mouseover', showId);
   trackContainer.addEventListener('mouseout', hideId);
-
 
     const osci = document.createElement('div'); 
     osci.classList.add('osc');	
     osci.id = 'osc-' + trackCount;  
     trackContainer.appendChild( osci );  
-	
-	
+
 	osc[trackCount] = new Nexus.Oscilloscope('osc-' + trackCount,{
   'size': [200,30]
    })
-   
-   
-      
+
     const valu = document.createElement('div'); 
     valu.classList.add('valu');	
     valu.id = 'valu-' + trackCount;  
-	 
+
     trackContainer.appendChild( valu );  
 
-
-
    const plusTone = document.createElement('span');
-  // plusTone.className = 'btnPlusTone';
    plusTone.classList.add('btnPlusTone');
-  // if(mobile) plusTone.classList.add('font40');
    plusTone.id = 'plustone-' + trackCount;
    plusTone.innerHTML = "+"; 
- 
+
    let thisCount = trackCount;
- 
+
    plusTone.onclick = function() 
    {
      flipFX(thisCount);
    };
-   
+
    trackContainer.appendChild( plusTone );
-   
-   
-   
+
    const changetone = document.createElement('span');
    changetone.classList.add('btnChangeTone');
-  //  if(mobile) changetone.classList.add('font40');
-	
+
 	 changetone.id = 'changetone-' + trackCount;
    changetone.innerHTML = "♻"; 
-   
-  
+
    changetone.onclick = function() 
    {
      flipNewTone(thisCount,1);
    };
-   
+
    trackContainer.appendChild( changetone );
-   
-   
+
     trackContainer.addEventListener('scroll', () => {
     plusTone.style.transform = `translateX(${trackContainer.scrollLeft - 15}px)`;
     changetone.style.transform = `translateX(${trackContainer.scrollLeft - 15}px)`;	
     });
-     
+
      plusTone.style.transform = `translateX(${trackContainer.scrollLeft - 15}px)`;
     changetone.style.transform = `translateX(${trackContainer.scrollLeft - 15}px)`;	
-   
+
       plusTone.style.display = "none";  
 	  changetone.style.display = "none";  
-   
+
    const volTone = document.createElement('div');
    volTone.className = 'targetVol';
    volTone.id = 'targetVol-' + trackCount;  
@@ -330,15 +271,12 @@ function plusTrack( )
 	 'smoothing': 0.3,
 	 'mode': 'bar'  // 'bar' or 'line'
 	});
-	
-	
-	
+
 	multislider.on('change',function(v) {	
- 
+
 		 if(tracks[trackCountHere].tones != null )
 		 {
 
-			
 			let vol = v[0];
 			if( vol < -22 )tracks[trackCountHere].tones.disconnect();
 			else  
@@ -348,16 +286,12 @@ function plusTrack( )
                     tracks[trackCountHere].tones.toDestination();
                }
 			}
-			
+
 		 tracks[trackCountHere].tones.set({ volume:v[0]}); 
-	 
-			 
+
 		 }		 
 
      })	
-	
- 
-	
 
    const numTrack = document.createElement('div');
    numTrack.className = 'numTrack';
@@ -365,19 +299,11 @@ function plusTrack( )
    numTrack.innerHTML= trackCount + 1;
    trackContainer.appendChild(  numTrack );	    
 
-    // var textbutton = new Nexus.TextButton('#numTrack-'+trackCount,{
-    // 'size': [20,20],
-    // 'state': true,
-    // 'text': trackCount + 1,
-    // 'alternateText': 'M'
-	// })
-
-
     const trackOsc = document.createElement('div'); 
 	trackOsc.id = 'trackosc-' + trackCount;	
 	trackOsc.className = 'trackosc';
 	trackContainer.appendChild(trackOsc);
-    
+
    	  const trackObject = {
 		trackCount: trackCount,
 		trackId:'track-' + trackCount,
@@ -394,14 +320,11 @@ function plusTrack( )
 		 sample:null,
 		 sampleLen:null
 	  }; 
-   
-   
-   
+
 	  tracks.push(trackObject);
- 		   
+
 		function showId(event) {
 			if( event.target.id =="" )return;
-			//console.log( event.target.id.split("-"));
 		 let spl = event.target.id.split("-");
 		 let  idplus =  "plustone-"+spl[1];
 		 document.getElementById(idplus).style.display="inline-block"; 
@@ -418,48 +341,34 @@ function plusTrack( )
 		 document.getElementById(idchange).style.display="none";		 
 		}
 
-	//if(trackCount!=0)flipNewTone(trackCount);
 	  trackCount++;
 }
 
- 
- 
 function changeToneOsc( str ,smpl)
 {
-   
-	// const trackContainer = document.getElementById('track-' + actualtrack);
-	osc[actualTrack].disconnect();
-	 
-	tracks[actualTrack].tones.disconnect();
-		
-	addOsc( str,smpl );
-	
 
+	osc[actualTrack].disconnect();
+
+	tracks[actualTrack].tones.disconnect();
+
+	addOsc( str,smpl );
 
 }
 
-
-
-
 function flipNewTone(idxx,change = 0)
 { 
-	
+
 	let idx = Number(idxx);	  
-	// console.log(tracks[idx].tones, flagNewTone);
-	
-	//if(idxx == 0 && change !=1  && flagNewTone == true)return;
-	
+
 	if (!tracks[idx] || !tracks[idx].tones )  
 	{	
 		if( flagNewTone )
 		{
-			//var cont = document.getElementById('menuSynth');
-			// if(idx.target != cont )return;
-			
+
 			 document.getElementById("menuSynth").style.display="none";
 			 flagNewTone = false;	
 			 flagChangeTone = false;
-			
+
 		}
 		else
 		{
@@ -475,9 +384,9 @@ function flipNewTone(idxx,change = 0)
 			 actualTrack = idx;
 			 flagNewTone = true; 
 			 flagChangeTone = true;
-		
+
 	}
-	
+
 }
 
 let flagFX = false;
@@ -485,41 +394,35 @@ let flagFX = false;
 function flipFX(idxx)
 {
 		let idx = Number(idxx);	
-		
-	
+
 		if( flagFX)
 		{
 			var cont = document.getElementById('menuFX');
-			// if(idx.target != cont )return;
-			
+
 			 document.getElementById("menuFX").style.display="none";
 			 flagFX= false;	
-			
+
 		}
 		else
 		{
-	 
+
 			 document.getElementById("menuFX").style.display="";
 			 actualTrack = Number(idx);
 			 flagFX = true;
 		}		
-	
+
 }
 
 function selectFX(str, event) 
 {
-	
+
     event.stopPropagation();
     document.getElementById("menuFX").style.display = "none";
     flagFX = false;
-	
-	
+
 	 addFX(str);
 
-	
 }
-
-
 
 function selectOsc(str, event ,smpl) 
 {
@@ -527,7 +430,6 @@ function selectOsc(str, event ,smpl)
     document.getElementById("menuSynth").style.display = "none";
     flagNewTone = false;
 
-	
 	if( flagChangeTone == false )
 	{
 	plusTrack();	
@@ -538,34 +440,30 @@ function selectOsc(str, event ,smpl)
 	   changeToneOsc(str,smpl);	
 	}
 
-	
 }
-
 
 function getMidiNote(noteName) {
   const noteToPC = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
   const modifiers = { '#': 1, 'b': -1 };
-  
+
   const match = noteName.match(/^([A-G])(#|b)?(-?\d+)$/);
   if (!match) return null;
-  
+
   const [, noteLetter, accidental, octave] = match;
   let noteNumber = noteToPC[noteLetter];
-  
+
   if (accidental) {
     noteNumber += modifiers[accidental];
   }
-  
+
   return noteNumber + (parseInt(octave) + 1) * 12;
 }
-
 
 function getNoteName(midiNumber) {
   const octave = Math.floor(midiNumber / 12) - 1;
   const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
   return notes[midiNumber % 12] + octave;
 }
-
 
 let baseOctave = 2;
 const activeKeys = new Set();
@@ -577,13 +475,11 @@ const keyToMidiMap = new Map(); // Tracks keyboard key to MIDI mapping
 
 // Unified Note Handling
 function handleNoteOn(midiNumber) {
-	
-		
+
 	if(!soundInit )return;
-	
+
 	if( ! flagSoundOn )return;
-    
-	
+
     // Update note stack (last pressed note has priority)
     activeNotesStack = activeNotesStack.filter(n => n !== midiNumber);
     activeNotesStack.push(midiNumber);
@@ -592,22 +488,19 @@ function handleNoteOn(midiNumber) {
     if (midiNumber !== currentMidiNote) {
         if (currentMidiNote !== null) {
             noteOff(getNoteName(currentMidiNote), actualTrack);
-           // piano.toggleKey(currentMidiNote, false);
         }
         currentMidiNote = midiNumber;
         noteOn(getNoteName(midiNumber), actualTrack);
-       // piano.toggleKey(midiNumber, true);
     }
-	
 
 }
 
 function handleNoteOff(midiNumber) {
-	
+
 	if(!soundInit )return;
-	
+
 		if( ! flagSoundOn )return;
-    
+
     activeNotesStack = activeNotesStack.filter(n => n !== midiNumber);
 
     // Handle note recycling
@@ -617,34 +510,29 @@ function handleNoteOff(midiNumber) {
             const newNote = activeNotesStack[activeNotesStack.length - 1];
             currentMidiNote = newNote;
             noteOn(getNoteName(newNote), actualTrack);
-            //piano.toggleKey(newNote, true);
         } else {
             // Silence
             noteOff(getNoteName(currentMidiNote), actualTrack);
             currentMidiNote = null;
         }
     }
-    //piano.toggleKey(midiNumber, false);
 }
-
 
 function midiSound( dt1,dt2,dt3 )
 {
- 
+
 	if( flagSoundOn == false )return;
-	
+
 	if(dt1<128)return;
     let vv = dt1%16;	
 	let nn = getNoteName(dt2);
-	
+
 	if(vv >= tracks.length)return;	
-	
-	
+
 	let myType = tracks.tone;
-	
+
 	console.log( myType );
 
-	
 	  if(dt1<144) noteOff( nn,vv  );
 	  else if(dt1<160)noteOn( nn,vv );	
       else if(dt1 >= 176 && dt1 < 192 )soundCC( dt1,dt2,dt3 );	
@@ -652,52 +540,41 @@ function midiSound( dt1,dt2,dt3 )
 
 }
 
-
 function soundBend( dt1,dt2,dt3 )
 {
-	
+
 	   let vv = dt1%16;
-	   
+
         let lsb = dt2;
         let msb = dt3;
         let value = (msb << 7) | lsb;
         let normalized = (value - 8192) / 8192; // Range -1 to +1
         let bendInSemitones = normalized * 5; // e.g. 2 semitone range
 
-
-   
      const synth = tracks[vv].tones;
-    
+
       if (!synth) return;
-   
+
       synth.detune.value = bendInSemitones * 100; // detune in cents	   
 
 }
 
-
-
-
 let lastTime = 0;
-
 
 function noteOn(note, nnTrack) {
     if(tracks.length < 1) return;
-	
-		// console.log(note, nnTrack) 
 
     const now = Tone.now();
     const synth = tracks[nnTrack].tones;
-    
+
     if (!synth) return;
 
     // Add a small offset (1ms) to prevent scheduling conflicts
     let safeTime = now + 0.001; 
-	
 
-	
 	if( safeTime < lastTime )safeTime = lastTime + 0.001; 
 	lastTime = safeTime;
- 
+
     if (synth instanceof Tone.NoiseSynth || synth.name === "NoiseSynth"  ) {
         synth.triggerAttack(safeTime);
     } 
@@ -708,17 +585,8 @@ function noteOn(note, nnTrack) {
 		else
 		{
 	       let dura = tracks[nnTrack].end[actualSample[actualTrack]] - tracks[nnTrack].start[actualSample[actualTrack]];
-		
- //		   let dura = tracks[nnTrack].nexus[3].elem.value - tracks[nnTrack].nexus[2].elem.value;
-			if(dura < 0)dura = -dura;
 
-		//	synth.stop(Tone.now());
-	        // console.log(dura);
-			   // synth.start(tracks[nnTrack].nexus[2].elem.value);
-			   // synth.stop(tracks[nnTrack].nexus[3].elem.value);	
-			   
-			   
-			   
+			if(dura < 0)dura = -dura;
 			  synth.start(safeTime,tracks[nnTrack].nexus[2].elem.value,dura);
 		}			
 	}
@@ -726,26 +594,15 @@ function noteOn(note, nnTrack) {
         synth.triggerAttack(note, safeTime);
     }
 
-	//	 document.getElementById("piano").classList.remove('hidden');
-		 
-		 
-		  // if(timerPiano) 
-		  // {
-			  // clearTimeout(timerPiano);
-			  // timerPiano = null;
-			  
-		  // }
-		 
-	
 }
 
 function noteOff(note, nnTrack) {
 if(tracks.length < 1)return;
-	
+
     const now = Tone.now();
-	
+
 	const synth = tracks[nnTrack].tones;
-	
+
     if (synth != null) 
 	{
 		if( synth instanceof Tone.Player || synth.name === "Player" )
@@ -754,19 +611,15 @@ if(tracks.length < 1)return;
 		}
 		else tracks[nnTrack].tones.triggerRelease(now);		
 	}
-	
 
- 
 }
 
 let timerPiano = null;
 
 document.addEventListener('keydown', (e) => {
-	 
-	 
-	
+
 		if(!soundInit )return;
-	
+
     const key = e.key.toLowerCase();
     if (activeKeys.has(key)) return;
 
@@ -795,51 +648,34 @@ document.addEventListener('keydown', (e) => {
         // Store mapping and update state
         keyToMidiMap.set(key, midiNumber);
         handleNoteOn(midiNumber);
-		
 
-        
-     //   console.log('KeyDown:', key, 'MIDI:', midiNumber, 'Stack:', activeNotesStack);
     }
 });
 
-
 document.addEventListener('keyup', (e) => {
-	
+
 		if(!soundInit )return;
-	
+
     const key = e.key.toLowerCase();
-    
+
     if (activeKeys.has(key)) {
         activeKeys.delete(key);
-        
+
         if (keyToMidiMap.has(key)) {
             const midiNumber = keyToMidiMap.get(key);
             handleNoteOff(midiNumber);
             keyToMidiMap.delete(key);
-            
-          //  console.log('KeyUp:', key, 'MIDI:', midiNumber, 'Stack:', activeNotesStack);
+
         }
     }
 
-
-
-   
-    // if (activeKeys.size === 0 && keyToMidiMap.size === 0) {
-      // timerPiano =  setTimeout(() => {
-            // document.getElementById("piano").classList.add('hidden');
-        // }, 1000);
-    // }
-	
-	
 });
 
-
- 
 let mySample = [];
- 
+
 function sampleLoaded(nn, nu) 
 {
-  
+
   var duration = tracks[nn].tones.buffer.duration;
   console.log( nn, " Sample length:", duration, "seconds" );
   tracks[nn].sampleLen = duration;
@@ -847,7 +683,6 @@ function sampleLoaded(nn, nu)
  	let slider2 = tracks[nn].nexus[2].elem;
 	let slider3 = tracks[nn].nexus[3].elem;
 
- 
 	slider2.min = 0;
 	slider2.max = duration;
 	slider3.min = 0;
@@ -863,40 +698,14 @@ function sampleLoaded(nn, nu)
         slider3.value = tracks[nn].end[0];
 		changeMiniSample(nn, 0);
     }
-	
-	
- 
-    // if(nu == "new")
-	// {
-  		// for(let i=0; i<1; i++)
-		// {
-			
-			// tracks[actualTrack].start[i] = 0;
-			// tracks[actualTrack].end[i] = duration ;
-		// }		
-	// }
-	
 
-	 
-	// slider2.set({ value: 0 });
-	// slider3.set({ value: duration });
-
- 
-  // if (slider2.draw) slider2.draw();
-  // if (slider3.draw) slider3.draw();
- 
- 
- 
 }
-
 
 function addOsc(str,smpl = null) 
 {	 
-	
+
     let synth;
- 
-    
- 
+
     // Use a switch statement to create the appropriate synth type
     switch (str) {
         case 'Synth':
@@ -931,9 +740,7 @@ function addOsc(str,smpl = null)
 			synth.loop = true;
             break;			
         case 'Player':
-		
-	
-		
+
 		if( smpl == null)
 		{
 			tracks[actualTrack].sample="Amen-break.wav";
@@ -948,59 +755,37 @@ function addOsc(str,smpl = null)
 			synth = new Tone.Player();
 		 }		
 
-   
-			
-		
-		// if( tracks[actualTrack].sample == null) changeSample();
-		// else loadSample(tracks[actualTrack].sample[0],tracks[actualTrack].sample[1]	);
-				
-
-			
-			
-
-			
-			
             break;	    
         default:
             console.error('Unknown synth type:', str);
             return; // Exit the function if the synth type is unknown
     }
 
-   
 	if(tracks[actualTrack].fx.length == 0)synth.toDestination();
     else synth.connect(tracks[actualTrack].fx[0]);
-	
+
 	 if( tracks[actualTrack].tones )tracks[actualTrack].tones.dispose();
 	 tracks[actualTrack].tones = null;
-	
-	
+
     tracks[actualTrack].tones = synth;	
 
    CC[actualTrack] = [];
 
-
-
-
     osc[actualTrack].connect(tracks[actualTrack].tones);
-	
 
     let params = synth.get();
-
- 
 
 	const orderedParams = ["volume", "detune",  "envelope", "voice0", "voice1",
 	"oscillator","harmonicity",  "portamento", "filter", "filterEnvelope",
 	"modulationEnvelope", "modulation", "attackNoise","dampening" ,"resonance" ,
 	"noise", "loop" , "playbackRate","loopStart","loopEnd"  ];
 
-
     trackOsc = document.getElementById("trackosc-" + actualTrack);
 	trackOsc.innerHTML = ""; 
 	tracks[actualTrack].nexus = [];
-	
+
 	let hereTrack = actualTrack;
-	
-	
+
 	if( str == "Player" )
 	{
 	const splCont  = document.getElementById("track-" + actualTrack);	
@@ -1010,39 +795,36 @@ function addOsc(str,smpl = null)
 	mspl.innerHTML = "Amen-break";
 	mspl.onclick = function(){changeSample(hereTrack);}
 	splCont.appendChild(mspl);	
-	
-	
+
 	const contSpl = document.createElement('div'); 
 	contSpl.id = 'contSpl-' + actualTrack;	
 	contSpl.className = 'contspl';
- 
+
 	splCont.appendChild(contSpl);	
 
-     	
 		for(let i=0; i<8; i++)
 		{
-			
+
 			const miniSpl = document.createElement('span'); 
 			miniSpl.id = "minispl-" + hereTrack + "-" + i;
 			miniSpl.className = 'minispl';
 			miniSpl.innerHTML = i+1;
-			
+
 		 	miniSpl.onclick = function(){changeMiniSample(hereTrack,i);}
-			
+
 			contSpl.appendChild(miniSpl);	
-			
+
 		}
-		
+
 		document.getElementById( "minispl-"+hereTrack+"-0").style.background = "#FF4400";
- 
-    
+
     if(tracks[actualTrack].loop)  console.log(tracks[actualTrack].start[0] , tracks[actualTrack].end[0] ); 
     else console.log("no exist");
-	
+
 		if (!tracks[actualTrack].start) 
 		{
 				console.log( "init sampler");
-			
+
 			tracks[actualTrack].loop = [];
 			tracks[actualTrack].rate = [];
 			tracks[actualTrack].start = [];
@@ -1056,18 +838,14 @@ function addOsc(str,smpl = null)
 				tracks[actualTrack].rate[i] = 1;		
 			}
 		}
-		
-	}
-	
-	
 
-	
+	}
 
 	orderedParams.forEach(paramName => {
 		if (paramName in params) {
-	
+
 			let paramValue = params[paramName];
-				
+
 			if (paramName === "envelope") {
 				createADSR(synth, str);
 			}
@@ -1090,7 +868,7 @@ function addOsc(str,smpl = null)
 				 else createPortamento(synth, "Portamento");				
 			}	
 			if (paramName === "filter") {
-				
+
 				if( str = 'MonoSynth')
 				{
 				createFiltType(synth, "Filter Type");					
@@ -1100,21 +878,15 @@ function addOsc(str,smpl = null)
 				createFiltType(synth, "Filter Type");					
 				createFilt(synth, "Filter Freq");	
 				}
-				
+
 			}	
 			if (paramName === "filterEnvelope") {
- 
+
 				if( str = 'MonoSynth')
 				{				
 				createADSR(synth, "FILTadsr");	
                 createXY(synth, "FILTxy");				
 				}					
-				// else
-				// {
-				// createFiltType(synth, "Filter Type");					
-				// createFilt(synth, "Filter Freq");	
-				// }
-				
 			}				
 			if (paramName === "modulationEnvelope") {
 				createADSR(synth, "MODadsr");
@@ -1136,82 +908,58 @@ function addOsc(str,smpl = null)
 				createPlayRate(synth, "PlayRate" );
 			} 	// "loop" , "playbackRate","loopStart","loopEnd" 
 			if (paramName === "loop") {
-				 
+
 				createLoop(synth, "Loop" );
 			} 	
 			if (paramName === "playbackRate") {
-			
+
 				playbackRate(synth, "Rate" );
 			} 		
 			if (paramName === "loopStart") {
-			
+
 				 sampleStart(synth, "Loop start" );  
 			} 					
 			if (paramName === "loopEnd") {
-			
+
 				 sampleEnd(synth, "Loop end" );
 			} 			
 		}
 	});
-	
-	
-	
+
 		if(smpl != null && str == 'Player')selectSample(smpl) ;
 		async function selectSample(smpl) 
 		{		
 		     tracks[actualTrack].sample = smpl
 		     swapSample("local",smpl);		
-			 
-		
-		
-			 // tracks[actualTrack].sample = smpl;
-			// await loadSample("local",smpl);		
-             // console.log(tracks[actualTrack]);
-             // synth = tracks[actualTrack].tones;		
-             // console.log(synth);
-		}		
 
- 
-
+			}
 
 // swapSample
 }
 
-
 function changeMiniSample(trk,nn)
 {
-	
- 
-	
+
 		for(let i=0; i<8; i++)
 		{ 
-			
+
 			let el= document.getElementById( "minispl-"+trk+"-"+i); 
 			el.style.background = "#444";
 
 		}
-	
+
 	document.getElementById( "minispl-"+trk+"-"+nn).style.background = "#FF4400";
-	
-	
+
 	actualSample[trk] = nn;
-	
+
 	tracks[trk].myLoop = nn;
-	
-   
-	 
-	
+
 	tracks[trk].nexus[0].elem.state = tracks[trk].loop[nn];	
 	tracks[trk].nexus[1].elem.value = tracks[trk].rate[nn];		 
 	tracks[trk].nexus[2].elem.value = tracks[trk].start[nn];		
 	tracks[trk].nexus[3].elem.value = tracks[trk].end[nn];	
-	
-	//tracks[actualTrack].tones.set({ loop: tracks[trk].loop[nn] });
-	
- 
-	
-}
 
+}
 
 function visualizeAudioGraph() {
     let graph = "Synth";
@@ -1222,16 +970,11 @@ function visualizeAudioGraph() {
     console.log(graph);
 }
 
-
-
-
 function addFX(str) {	 
 
     let fx;
 	let hereCountFX = countFX;
- 
- 
-    
+
     switch(str) {
         case 'AutoFilter':
             fx = new Tone.AutoFilter();
@@ -1319,27 +1062,24 @@ function addFX(str) {
             console.error('Unknown FX type:', str);
             return;
     }
-	
-	
+
 	if(fx) {
- 
-        // console.log('-> ', str);
+
     }else  return;
-	
-	
+
     if(tracks[actualTrack].fx.length === 0 )
 	{
-		
+
 	try {
 		if (osc[actualTrack]) osc[actualTrack].disconnect();
 	} catch (error) {
 		console.warn("Oscilloscope disconnect skipped:", error);
 	}
-		
+
     tracks[actualTrack].tones.disconnect(); // Tone.Destination
 
 	tracks[actualTrack].tones.connect(fx);
-	
+
 	fx.connect(Tone.Destination);	
 
 	try {
@@ -1347,20 +1087,12 @@ function addFX(str) {
 	} catch (error) {
 		console.warn("Oscilloscope reconnect skipped:", error);
 	}
-	
-	// if(osc[actualTrack])osc[actualTrack].disconnect();
-    // if(osc[actualTrack])osc[actualTrack].connect( tracks[actualTrack].tones );	
 
-    // console.log( osc[actualTrack] );
-    // console.log( tracks[actualTrack].tones );
-
-	
-	
 	}
 	else
 	{
 	 let ln = tracks[actualTrack].fx.length;	
-		
+
      tracks[actualTrack].fx[ln-1].disconnect(); //Tone.Destination
 
 	 tracks[actualTrack].fx[ln-1].connect(fx);
@@ -1370,71 +1102,28 @@ function addFX(str) {
    tracks[actualTrack].fx.push(fx);
    tracks[actualTrack].idfx.push(countFX[actualTrack]);   
    tracks[actualTrack].nexusFX.push([]);   
-   
+
    CC[actualTrack].push([]);   
 
     let params = fx.get();
 
-   // visualizeAudioGraph();
-   
- 
-   
    let hereColor = getRandomDarkColor(); 
-   
-    //const numFx = countFX[actualTrack];  //   
+
 	const numFx = (tracks[actualTrack].fx.length) - 1;  
-	
-   
+
    	const trackContainer  = document.getElementById("track-" + actualTrack);
-	  
+
     const fxContainer = document.createElement('div');	  	  
 	fxContainer.id = "myFX-" +  actualTrack + "-" +  countFX[actualTrack];
 	fxContainer.className= "myFX";
 	fxContainer.style.backgroundColor = hereColor;
 	trackContainer.appendChild(fxContainer);
-	
-	
+
 	const labelfx = document.createElement('div');	 
 	labelfx.innerHTML = str;
 	labelfx.className= "labelfx";
 	  fxContainer.appendChild(labelfx);
-	  
 
-
-	  
-
-// "type" ,
-
-	// const orderedParams = ["wet" , "feedback","resonance" , "depth" , "delayTime" , 
- // "frequency" ,  "octaves" , "baseFrequency" , "spread" , "bits" , 
- // "low", "lowFrequency", "mid", "highFrequency" , "high",
- // "attack", "knee", "release", "threshold" , "ratio",
- // "distortion", "roomSize" , "Q" , "sensitivity" , "type" 
- // , "pitch","decay","preDelay"];
- 
- 
- 
- 
- // const fxMin = [0, 0, 0, 0, 0,
- // 1, 1, 20, 0, 1,
- // 0, 0, 0, 0, 0,
- // 0, 0,0,0.01 ,2000,
- // -12 , 0.01 , 0,-18, 40,
- // -18,800 , -18 , 0, 0,
- // 0, -100, 1, 0 ,0 ,
- // 0 , 0.1, -40 ,0 , -24 ,
- // 0.01 , 1  ];
- // const fxMax = [1, 1, 10, 1, 1,
- // 24000, 8, 8000, 1, 16, 
- // 1, 10, 1, 2, 10,
- // 1, 1,1,1 , 10000,
- // 12 , 1, 1,12, 2000,
- // 12, 12000 , 12 ,0.100, 40 ,
- // 0.200, 0 ,20, 1 , 1 , 
-// 1 , 10, 0,1, 24 ,
- // 500 , 100 ]; 
- 
- 
  const orderedParams = [
   "wet", "feedback", "resonance", "depth", "delayTime",
   "frequency", "octaves", "baseFrequency", "spread", "bits",
@@ -1508,125 +1197,95 @@ const fxMax = [
   1 ,     // preDelay (s)
   1       // width
 ];
- 
-	
+
 	let countBt = 0; 
 
-
-
-
 	orderedParams.forEach((paramName, idx) => {  
-	
 
-	
 	  if (paramName in params) {
 		const min = fxMin[idx];
 		const max = fxMax[idx];
 		const val = (max - min) / 2;
 
-			// createFXDial(fx, paramName, fxContainer, min, max, val);
-		    // countBt++;
- 
 	 const currentFXIndex = tracks[actualTrack].fx.length -1;
-	 
-	 
-	 
+
 	 if( paramName == "preDelay" ) console.log(min , max);
-	 
-	 
+
 		if (!(str === 'Phaser' && paramName === 'frequency')) 
 		{
-																		 
+
 		 if(paramName === 'type')createFXType(fx, paramName, fxContainer,str, countFX[actualTrack]);
 		 else
 		 {
 			 createFXDial(fx, paramName, fxContainer, min, max, val,countFX[actualTrack]  );
-			 
-			 
+
 			 CC[actualTrack][currentFXIndex][countBt] = paramName;
-			 
+
 			 adCCFX( actualTrack,currentFXIndex, countBt, paramName, hereColor  );
-		 
+
 		 }			 
 		  countBt++;
 		}
-		
+
 	  }
 	});
-	
+
 			 tracks[actualTrack].nexusColor.push( hereColor );	 
-		
-//	let wdh = parseInt(getComputedStyle(fxContainer).width, 10); // Get real width
+
 	let wdh = fxContainer.offsetWidth;
-	
- //console.log(wdh );
- 
+
 	if (countBt <= 2  ) {
-	//	fxContainer.style.width = (wdh - 15) + "px";	
 	}
 	else if (countBt >= 3 && countBt <= 4 ) {
-		//fxContainer.style.width = (wdh + 3) + "px";
 		labelfx.style.marginLeft="-4px";
 	} 
 	else if (countBt == 5  ) {
-		//fxContainer.style.width = (wdh + 55) + "px";
 		labelfx.style.marginLeft="0px";	
- 	 
+
 	}	
 	else if (countBt == 6) {
-	//	fxContainer.style.width = (wdh + 22) + "px";
 		labelfx.style.marginLeft="0px";		 
 	}
 	else if(countBt <= 7) 
 	{
-	//	fxContainer.style.width = (wdh + 32) + "px";
 		labelfx.style.marginLeft="0px";		
 
 	}	
-      //  wdh = parseInt(getComputedStyle(fxContainer).width, 10); // Get real width
-	 
-	
+
 	trackContainer.scrollTo({ left: trackContainer.scrollWidth, behavior: "smooth" });
 
 	let btRemove = document.createElement('div');	 
 	btRemove.innerHTML = "X";
 	btRemove.className= "btRemove";
 	fxContainer.appendChild(btRemove);
-	
+
 	if(countBt == 1 || countBt == 3 || countBt == 5 || countBt == 7 || countBt == 9 )
 	{
 		btRemove.style.top="57px";
 		btRemove.style.left="20px";
 	}
-	
+
 	if( countBt == 1 )btRemove.style.left="35px";	
 	else if( countBt == 2 )btRemove.style.left="3px";
 	else if( countBt == 3 )btRemove.style.left="27px";	
 	else if( countBt == 4 )btRemove.style.left="-5px";
 	else if( countBt == 5 )btRemove.style.left="15px";	
-	
-	
+
 	let trackHere = actualTrack;
 	let idfxHere = countFX[actualTrack];
-	
+
 	btRemove.addEventListener('click', function (event) {
-	 
+
 	 removeFX( trackHere , countFX[actualTrack] , idfxHere );
-	 
+
 	});
-	
 
 	countFX[actualTrack]++;
-	
-	
-
 
 }
 
-
 function removeFX(trackNum, fxNum, idFx) {
-	
-   
+
     let idx = tracks[trackNum].idfx.indexOf(idFx);
     if (idx === -1) return;
     fxNum = idx;
@@ -1637,71 +1296,51 @@ function removeFX(trackNum, fxNum, idFx) {
 
     // Remove from nexusFX array
     tracks[trackNum].nexusFX.splice(fxNum, 1);
-	
+
 	CC[trackNum].splice(fxNum, 1);
 	tracks[trackNum].nexusColor.splice(fxNum, 1);
-	
-    
+
 	removeCCFX(trackNum); // ,fxNum
-	
-	// countFX[trackNum] = countFX[trackNum] - 1;
-	
-	
-	
 
     // Original length of the fx array before removal
     const originalLength = tracks[trackNum].fx.length;
 
-
 	    osc[trackNum].disconnect();	
-
 
     // Reconnect nodes before disposing the effect
     if (originalLength === 1) {
-        // Case: Only one effect, connect tones directly to destination
 
         tracks[trackNum].tones.disconnect();
         tracks[trackNum].tones.toDestination();
 
     } else if (fxNum === 0) {
-        // Case: First effect, connect tones to next effect
-		
-		
+
         tracks[trackNum].tones.disconnect();
         tracks[trackNum].tones.connect(tracks[trackNum].fx[1]);
     } else if (fxNum === originalLength - 1) {
-        // Case: Last effect, connect previous effect to destination
         tracks[trackNum].fx[fxNum - 1].toDestination();
     } else {
-        // Case: Middle effect, connect previous to next
         tracks[trackNum].fx[fxNum - 1].disconnect(); // Disconnect from removed node
         tracks[trackNum].fx[fxNum - 1].connect(tracks[trackNum].fx[fxNum + 1]);
     }
-	
-			
+
 	osc[trackNum].connect( tracks[trackNum].tones );	
-		
 
     // Dispose and remove from arrays
     tracks[trackNum].fx[fxNum].dispose();
     tracks[trackNum].fx.splice(fxNum, 1);
     tracks[trackNum].idfx.splice(fxNum, 1);
-	
+
 	refreshRemoveButtons( trackNum );
-	
-	
+
 }
-
-
-
 
 function refreshRemoveButtons(trackNum) {
   const trackContainer = document.getElementById(`track-${trackNum}`);
   if (!trackContainer) return;
 
-  // For each FX container in this track
   const fxContainers = trackContainer.querySelectorAll(".myFX");
-  
+
   fxContainers.forEach(container => {
     // Extract stable id from container id, e.g., "myFX-0-3" -> 3
     const parts = container.id.split("-");
@@ -1724,32 +1363,27 @@ function refreshRemoveButtons(trackNum) {
   });
 }
 
-
-
 function createFXType(fx, paramValue, fxContainer , str , nnFx)
 {
-	
- //	console.log(fx, paramValue, fxContainer , str , nnFx);
-	
+
 	  const target = document.createElement('div');	  
 	  target.className = 'fx';
 	  target.style.borderWidth = "1px";
-	  
-	  
+
       const label = document.createElement('div');	  
 	  label.className = 'fx-label';    
 	  label.innerHTML = paramValue;
 	  target.appendChild(label);	
-	
+
 	  let ln = tracks[actualTrack].nexusFX.length;	  
 	  ln = ln-1;
 	  let countElem = tracks[actualTrack].nexusFX[ln].length;
- 	  
+
 	  target.id = 'fx-' + actualTrack + "-" + countFX[actualTrack] + "-" + countElem ;
 	  fxContainer.appendChild(target);
-	
+
 	var select = null;
-	
+
 	if( str =="Chorus" || str == "Compressor" || str == "AutoFilter" ||
 	str == "Vibrato" || str == "AutoPanner" || str == "Tremolo"   )
     select = new Nexus.Select('#' + target.id, {
@@ -1760,30 +1394,27 @@ function createFXType(fx, paramValue, fxContainer , str , nnFx)
 		'size': [40,40],
 		  'options': filterType 
 		})  
-    
+
 	let trackHere = actualTrack;
- 
+
     select.on('change', function(v) {
-     
+
 	 let idx = findFXIndexById(nnFx);
 	 if(idx === null)return;
      tracks[trackHere].fx[idx].set({type: v.value });
-		//console.log(v.value);
-		
+
     });
-	
-	
+
 		const fxObject = {
 		id: target.id,
 		container: fxContainer,
 		elem: select,
 		elemType:paramValue
-		
+
 	  };
 
 	  tracks[actualTrack].nexusFX[ln].push(fxObject);
 
-	
 }
 
 function findFXIndexById(targetIdFX) {
@@ -1796,34 +1427,28 @@ function findFXIndexById(targetIdFX) {
   return null; // If no matching idFX is found
 }
 
-
 function createFXDial(fx, paramValue ,fxContainer,min,max,val, nnFx)
 {
-	
-//	console.log(fx, paramValue,fxContainer,min,max,val);
-   	  
+
       const target = document.createElement('div');	  
 	  target.className = 'fx';
 	  target.style.borderWidth = "1px";
-	  
-	  
+
       const label = document.createElement('div');	  
 	  label.className = 'fx-label';    
 	  label.innerHTML = paramValue;
 	  target.appendChild(label);	
-	
+
 	  let ln = tracks[actualTrack].nexusFX.length;	  
 	  ln = ln-1;
 	  let countElem = tracks[actualTrack].nexusFX[ln].length;
- 	                                            //ln
+
 	  target.id = 'fx-' + actualTrack + "-" + countFX[actualTrack] + "-" + countElem ;
-	  
-	  
-	  
+
 	  fxContainer.appendChild(target);
-	
+
 	if(paramValue== "frequency" )console.log(min,max);
- 
+
 	var dial = new Nexus.Dial(target.id,{
 	  'size': [40,40],
 	  'interaction': 'radial', // "radial", "vertical", or "horizontal"
@@ -1833,57 +1458,44 @@ function createFXDial(fx, paramValue ,fxContainer,min,max,val, nnFx)
 	  'step': 0.002,
 	  'value': val
 	})
-	
-	
+
 	let trackHere = actualTrack;
- 
+
     dial.on('change', function(v) {
-     
+
 	 let idx = findFXIndexById(nnFx);
 	 if(idx === null)return;
-	 
-	//   console.log( tracks[trackHere].fx[idx].name , paramValue  );
-	// console.log(tracks[trackHere].fx[idx] );
-	 
-	 // if(tracks[trackHere].fx[idx].name == "frequency" )tracks[trackHere].fx[idx].set({ [paramValue]:mapvalLog(v,min,max,min,max)});
+
 	  if(paramValue== "frequency" )tracks[trackHere].fx[idx].set({ [paramValue]:mapvalExp(v,min,max,min,max)}); 
 	  else  tracks[trackHere].fx[idx].set({ [paramValue]: v });
-	  
-	  
 
     });
-	
-		
+
 	  const fxObject = {
 		id: target.id,
 		container: fxContainer,
 		elem: dial,
 		elemType:paramValue
-		
+
 	  };
 
 	  tracks[actualTrack].nexusFX[ln].push(fxObject);
 
 }
 
-
 function getRandomLightColor() {
     const randomColor = Math.floor(Math.random() * 0x7FFFFF + 0x800000).toString(16);
     return `#${randomColor.padStart(6, '0')}`;
 }
-
 
 function getRandomDarkColor() {
     const randomColor = Math.floor(Math.random() * 0x7FFFFF).toString(16);
     return `#${randomColor.padStart(6, '0')}`;
 }
 
-
 function createADSR(synth,str,vv)
 {
-	  // str = str.replace("Synth","");
-	  // if(str =="")str = "Synth";
-	  
+
 	  	tracks[actualTrack].tones.set({
 			envelope: {
 				attackCurve: "exponential"
@@ -1893,20 +1505,16 @@ function createADSR(synth,str,vv)
 	  const trackContainer  = document.getElementById("trackosc-" + actualTrack);
       const target = document.createElement('div');	  
 	  target.className = 'target';
-	  
 
-	 
       const label = document.createElement('div');	
      if(str != "MODadsr"   && str != "DuoSynth2" && str !=  "FILTadsr" )label.className = 'labelfx2';   //target-synth	  
 	  else label.className = 'labelfx';    //target-label
 	   if(str == "MODadsr")label.innerHTML = " &nbsp; " + str;
 	  else label.innerHTML = str;
 	  target.appendChild(label);	
-	  
-	 // 	  console.log(label);
-	 
+
 	  let countElem = tracks[actualTrack].nexus.length;
-	  
+
 	  target.id = 'tone-' + actualTrack + "-" + countElem ;
 	  trackContainer.appendChild(target);
 
@@ -1921,19 +1529,15 @@ function createADSR(synth,str,vv)
 		  { x: 1.0, y: 0.0 , frozen:true  }
           ]
 	  });
-	  
 
- 
-			  
 	  envelope.on('change', () => {
-	 
+
 	  if (envelope.points.length < 5) {
- 
-		
+
 		envelope.addPoint(0.4,0.5);
-	   
+
 	  }
-	   
+
 		 let x1 = envelope.points[1].x;
 		 let y1 = envelope.points[1].y;	
 		 let x2 = envelope.points[2].x;		 
@@ -1946,27 +1550,27 @@ function createADSR(synth,str,vv)
 			 x4 = envelope.points[4].x;				 
 			 y4 = envelope.points[4].y;		
 		 }
-		
+
 		 if (y1 < 1) 
 		 {
 		 envelope.movePoint( 1, x1, 1.0 );
 		 }
-		 
+
 		 if (x1 > 0.25) 
 		 {
 		 envelope.movePoint( 1, 0.25, y1 );
 		 }	
-		 
+
 		 if (x2 > 0.5) 
 		 {
 		 envelope.movePoint( 2, 0.5, y2 );
 		 }	
-		 
+
 		 if(y3 > 0.0)
 		 {
 		 envelope.movePoint( 3, x3, 0.0 );			 
 		 }
-		 
+
 		 if(envelope.points[4])  
 		 {
 			 if(y4 > 0.0)
@@ -1978,14 +1582,7 @@ function createADSR(synth,str,vv)
 			 envelope.movePoint( 4, 1.0, 0.0 );			 
 			 }				 
 		 }
-		 
-	    // console.log(tracks[actualTrack].tones.envelope);
-	    // console.log();		
-		  
- //console.log("-----  " +  mapval(x2, x1, 0.5,  0,4) );				  
-		  
-		  
-		  
+
 	if (vv == 0) {
 		tracks[actualTrack].tones.set({
 			["voice0"]: {
@@ -2029,7 +1626,6 @@ function createADSR(synth,str,vv)
 					release: mapval(x3, x2, 1, 0, 8)
 			}
 		});
-	//	console.log("kiki adsr");
 	} 		
 	else {
 		tracks[actualTrack].tones.set({
@@ -2041,32 +1637,24 @@ function createADSR(synth,str,vv)
 			}
 		});
 	}
- 
+
 	 });
-	 
-	 
+
 	  const trackObject = {
 		id: target.id,
 		container: trackContainer,
 		elem: envelope,
 		elemType:str
-		
+
 	  };
-	 
- 
+
 	  tracks[actualTrack].nexus.push(trackObject);
-	  
-	 
- 
+
 }
-
-
 
 function createAD(synth,str,vv)
 {
-	  // str = str.replace("Synth","");
-	  // if(str =="")str = "Synth";
-	  
+
 	  	tracks[actualTrack].tones.set({
 			envelope: {
 				attackCurve: "exponential"
@@ -2076,15 +1664,14 @@ function createAD(synth,str,vv)
 	  const trackContainer  = document.getElementById("trackosc-" + actualTrack);
       const target = document.createElement('div');	  
 	  target.className = 'target';
-	  
-	  
+
       const label = document.createElement('div');	  
 	  label.className = 'labelfx2';    
 	  label.innerHTML = str;
 	  target.appendChild(label);	
-	  
+
 	  let countElem = tracks[actualTrack].nexus.length;
-	  
+
 	  target.id = 'tone-' + actualTrack + "-" + countElem ;
 	  trackContainer.appendChild(target);
 
@@ -2097,19 +1684,15 @@ function createAD(synth,str,vv)
 		  { x: 0.75, y: 0.0 }		  
           ]
 	  });
-	  
 
- 
-			  
 	  envelope.on('change', () => {
-	 
+
 	  if (envelope.points.length < 3) {
- 
-		
+
 		envelope.addPoint(0.6,0.5);
-	   
+
 	  }
-	   
+
 		 let x0 = envelope.points[0].x;
 		 let y0 = envelope.points[0].y;		   
 		 let x1 = envelope.points[1].x;
@@ -2117,75 +1700,64 @@ function createAD(synth,str,vv)
 		 let x2 = envelope.points[2].x;		 
 		 let y2 = envelope.points[2].y;			 
 
-
          if( x0 > 0 || y0 > 0 )envelope.movePoint( 0, 0.0 , 0.0 );
 
 		 if (y1 < 1) 
 		 {
 		 envelope.movePoint( 1, x1, 1.0 );
 		 }
-		 
+
 		 if (x1 > 0.5) 
 		 {
 		 envelope.movePoint( 1, 0.5, y1 );
 		 }	
-		 
+
 		 if (x2 < x1) 
 		 {
 		 envelope.movePoint( 2, x1, y2 );
 		 }	
-		 
+
 		 if(y2 > 0.0)
 		 {
 		 envelope.movePoint( 2, x2, 0.0 );			 
 		 }
-		 
- 
-	
+
 		tracks[actualTrack].tones.set({
-			 
+
 				attackNoise: mapval(x1, 0, 0.5, 0, 8),
 				release: mapval(x2, x1, 1, 0, 8)
-		 
+
 		});
-		
- 
- 
+
 	 });
-	 
-	 
+
 	  const trackObject = {
 		id: target.id,
 		container: trackContainer,
 		elem: envelope,
 		elemType:str
-		
+
 	  };
-	 
- 
+
 	  tracks[actualTrack].nexus.push(trackObject);
-	  
-	 
- 
+
 }
 
 function createWaveform(synth,str,vv)
 {
-	
+
 	  const trackContainer  = document.getElementById("trackosc-" + actualTrack);
       const target = document.createElement('div');	  
 	  target.className = 'target';
-	  
-	  
+
       const label = document.createElement('div');	  
 	  label.className = 'target-label';   
-     	  
+
 	  label.innerHTML = str;
 	  target.appendChild(label);	
-	  
+
 	  let countElem = tracks[actualTrack].nexus.length;
- 
-	  
+
 	  target.id = 'tone-' + actualTrack + "-" + countElem ;
 	  trackContainer.appendChild(target);
 
@@ -2194,7 +1766,6 @@ function createWaveform(synth,str,vv)
 		  'options': waveforms
 		})  
 
- 
 select.on('change', function(v) {
     if (vv == 0) {
         tracks[actualTrack].tones.set({
@@ -2218,45 +1789,36 @@ select.on('change', function(v) {
 
 });
 
-
-
- 	
 	  const trackObject = {
 		id: target.id,
 		container: trackContainer,
 		elem: select,
 		elemType:str
-		
-	  };
-	 
- 
-	  tracks[actualTrack].nexus.push(trackObject);
- 
-	
-}
 
+	  };
+
+	  tracks[actualTrack].nexus.push(trackObject);
+
+}
 
 function createHarmonicity(synth, str )
 {
- 	
+
 	  const trackContainer  = document.getElementById("trackosc-" + actualTrack);
       const target = document.createElement('div');	  
 	  target.className = 'target';
 	  target.style.borderWidth = "0px";
-	  
-	  
+
       const label = document.createElement('div');	  
 	  label.className = 'target-label2';    
 	  label.innerHTML = str;
 	  target.appendChild(label);	
-	  
+
 	  let countElem = tracks[actualTrack].nexus.length;
- 
-	  
+
 	  target.id = 'tone-' + actualTrack + "-" + countElem ;
 	  trackContainer.appendChild(target);
-	
- 
+
 	var dial = new Nexus.Dial(target.id,{
 	  'size': [50,50],
 	  'interaction': 'radial', // "radial", "vertical", or "horizontal"
@@ -2266,47 +1828,41 @@ function createHarmonicity(synth, str )
 	  'step': 0.1,
 	  'value': 0
 	})
-	
-	
+
 	dial.on('change',function(v) {
 		    tracks[actualTrack].tones.set({ harmonicity:mapvalExp(v,0,8,0,8) });		
    })
-		
+
 	  const trackObject = {
 		id: target.id,
 		container: trackContainer,
 		elem: dial,
 		elemType:str
-		
+
 	  };
-	 
- 
+
 	  tracks[actualTrack].nexus.push(trackObject);
 
 }
 
-
 function createDampening(synth, str )
 {
- 	
+
 	  const trackContainer  = document.getElementById("trackosc-" + actualTrack);
       const target = document.createElement('div');	  
 	  target.className = 'target';
 	  target.style.borderWidth = "0px";
-	  
-	  
+
       const label = document.createElement('div');	  
 	  label.className = 'target-label2';    
 	  label.innerHTML = str;
 	  target.appendChild(label);	
-	  
+
 	  let countElem = tracks[actualTrack].nexus.length;
- 
-	  
+
 	  target.id = 'tone-' + actualTrack + "-" + countElem ;
 	  trackContainer.appendChild(target);
-	
- 
+
 	var dial = new Nexus.Dial(target.id,{
 	  'size': [50,50],
 	  'interaction': 'radial', // "radial", "vertical", or "horizontal"
@@ -2316,48 +1872,41 @@ function createDampening(synth, str )
 	  'step': 1,
 	  'value': 5500
 	})
-	
-	
+
 	dial.on('change',function(v) {
 		    tracks[actualTrack].tones.set({ dampening:v });		
    })
-		
+
 	  const trackObject = {
 		id: target.id,
 		container: trackContainer,
 		elem: dial,
 		elemType:str
-		
+
 	  };
-	 
- 
+
 	  tracks[actualTrack].nexus.push(trackObject);
 
 }
 
-
 function createResonance(synth, str )
 {
- 	
+
 	  const trackContainer  = document.getElementById("trackosc-" + actualTrack);
       const target = document.createElement('div');	  
 	  target.className = 'target';
 	  target.style.borderWidth = "0px";
-	  
-	  
+
       const label = document.createElement('div');	  
 	  label.className = 'target-label2';    
 	  label.innerHTML = str;
 	  target.appendChild(label);	
-	  
-	  
+
 	  let countElem = tracks[actualTrack].nexus.length;
- 
-	  
+
 	  target.id = 'tone-' + actualTrack + "-" + countElem ;
 	  trackContainer.appendChild(target);
-	
- 
+
 	var dial = new Nexus.Dial(target.id,{
 	  'size': [50,50],
 	  'interaction': 'radial', // "radial", "vertical", or "horizontal"
@@ -2367,26 +1916,22 @@ function createResonance(synth, str )
 	  'step': 0.002,
 	  'value':0.5
 	})
-	
-	
+
 	dial.on('change',function(v) {
 		    tracks[actualTrack].tones.set({ resonance:v });		
    })
-		
+
 	  const trackObject = {
 		id: target.id,
 		container: trackContainer,
 		elem: dial,
 		elemType:str
-		
+
 	  };
-	 
- 
+
 	  tracks[actualTrack].nexus.push(trackObject);
 
 }
-
-
 
 function createPortamento(synth, str )
 {
@@ -2394,20 +1939,17 @@ function createPortamento(synth, str )
       const target = document.createElement('div');	  
 	  target.className = 'target';
 	  target.style.borderWidth = "0px";
-	  
-	  
+
       const label = document.createElement('div');	  
 	  label.className = 'target-label2';    
 	  label.innerHTML = str;
 	  target.appendChild(label);	
-	  
+
 	  let countElem = tracks[actualTrack].nexus.length;
- 
-	  
+
 	  target.id = 'tone-' + actualTrack + "-" + countElem ;
 	  trackContainer.appendChild(target);
-	
- 
+
 	var dial = new Nexus.Dial(target.id,{
 	  'size': [50,50],
 	  'interaction': 'radial',  
@@ -2417,21 +1959,19 @@ function createPortamento(synth, str )
 	  'step': 0.1,
 	  'value': 0
 	})
-	
-	
+
 	dial.on('change',function(v) {
 		    tracks[actualTrack].tones.set({ portamento:mapvalExp(v,0,3.5,0,3.5) });		
    });
-		
+
 	  const trackObject = {
 		id: target.id,
 		container: trackContainer,
 		elem: dial,
 		elemType:str
-		
+
 	  };
-	 
- 
+
 	  tracks[actualTrack].nexus.push(trackObject);
 
 }
@@ -2442,20 +1982,17 @@ function createFilt(synth, str, vv )
       const target = document.createElement('div');	  
 	  target.className = 'target';
 	  target.style.borderWidth = "0px";
-	  
-	  
+
       const label = document.createElement('div');	  
 	  label.className = 'target-label2';    
 	  label.innerHTML = str;
 	  target.appendChild(label);	
-	  
+
 	  let countElem = tracks[actualTrack].nexus.length;
- 
-	  
+
 	  target.id = 'tone-' + actualTrack + "-" + countElem ;
 	  trackContainer.appendChild(target);
-	
- 
+
 	var dial = new Nexus.Dial(target.id,{
 	  'size': [50,50],
 	  'interaction': 'radial',  
@@ -2465,28 +2002,24 @@ function createFilt(synth, str, vv )
 	  'step': 1,
 	  'value': 800
 	})
-	
-	
+
 	dial.on('change',function(v) {
        	    tracks[actualTrack].tones.set({ filter: {
 			frequency:v}});	
-			 
- 	
+
    });
-		
+
 	  const trackObject = {
 		id: target.id,
 		container: trackContainer,
 		elem: dial,
 		elemType:str
-		
+
 	  };
-	 
- 
+
 	  tracks[actualTrack].nexus.push(trackObject);
 
 }
-
 
 function createFiltType(synth, str, vv )
 {
@@ -2494,73 +2027,60 @@ function createFiltType(synth, str, vv )
       const target = document.createElement('div');	  
 	  target.className = 'target';
 	  target.style.borderWidth = "0px";
-	  
-	  
+
       const label = document.createElement('div');	  
 	  label.className = 'target-label';    
 	  label.innerHTML = str;
 	  target.appendChild(label);	
-	  
+
 	  let countElem = tracks[actualTrack].nexus.length;
- 
-	  
+
 	  target.id = 'tone-' + actualTrack + "-" + countElem ;
 	  trackContainer.appendChild(target);
-	
- 
+
       var select = new Nexus.Select('#' + target.id, {
 		'size': [100,30],
 		  'options': filterType
 		}) 
-	
-	 
+
 	select.on('change',function(v) {
        	    tracks[actualTrack].tones.set({ filter: {
 			type:v.value}});					
    });
-   
-   
-		
+
 	  const trackObject = {
 		id: target.id,
 		container: trackContainer,
 		elem: select,
 		elemType:str
 		};
-	 
- 
+
 	  tracks[actualTrack].nexus.push(trackObject);
 
 }
 
-
-
 function createLoop(synth, str)
 {
-	
+
 	actualSample[actualTrack] = 0;
-	
+
 	  const trackContainer  = document.getElementById("trackosc-" + actualTrack);
       const target = document.createElement('div');	  
 	  target.className = 'target';
 	  target.style.borderWidth = "0px";
-	  
-	  
+
       const label = document.createElement('div');	  
 	  label.className = 'labelfx2';    
 	  label.innerHTML = str;
 	  target.appendChild(label);	
-	  
+
 	  let countElem = tracks[actualTrack].nexus.length;
-	  
-	  
- 
-	  
+
 	  target.id = 'tone-' + actualTrack + "-" + countElem ;
 	  trackContainer.appendChild(target);
-	
+
 	 let valLoop = tracks[actualTrack].loop[0];	
- 
+
       var toggle = new Nexus.Toggle('#' + target.id, {
 		'size': [50,20],
 		   'state': valLoop
@@ -2571,59 +2091,47 @@ function createLoop(synth, str)
 
 	  player.set({ loop: v });
 		tracks[actualTrack].loop[actualSample[actualTrack]] = v;	
-		
-		
 
 	  if (!v) {
 		// Stop current playback and start only 1s playback without loop
-	  //  player.stop();
-	   // player.start(undefined, 0, 1);
 	  } else {
 		// Start normally looping playback
-	  //  player.stop();
-	  //  player.start(undefined, 0); // plays full buffer looping as loop=true
 	  }
 
-//	   console.log("change " + player.loop);
-	   
 	});
 
-	
 	  const trackObject = {
 		id: target.id,
 		container: trackContainer,
 		elem: toggle,
 		elemType:str
 		};
-	 
+
 	  tracks[actualTrack].nexus.push(trackObject);
 
 }
 
-
 function playbackRate(synth, str)
 {
-		 
+
 	  const trackContainer  = document.getElementById("trackosc-" + actualTrack);
       const target = document.createElement('div');	  
 	  target.className = 'target';
 	  target.style.borderWidth = "0px";
-	  
-	  
+
       const label = document.createElement('div');	  
 	  label.className = 'target-label';    
 	  label.innerHTML = str;
 	  target.appendChild(label);	
-	  
+
 	  let countElem = tracks[actualTrack].nexus.length;
- 
-	  
+
 	  target.id = 'tone-' + actualTrack + "-" + countElem ;
 	  trackContainer.appendChild(target);
-	  
+
 	  target.style.paddingLeft = "25px";
 	  target.style.paddingRight = "25px";	
- 
+
       var slider = new Nexus.Slider('#' + target.id, {
 		     'size': [20,90],
 			'mode': 'absolut',  // 'relative' or 'absolute'
@@ -2634,63 +2142,54 @@ function playbackRate(synth, str)
 		});
 
 	slider.on('change',function(v) {
-		 
-	 
-		 
+
 		 if( v < 1.03 && v > 0.97 ){
 			 v == 1;
 			 label.style.color="#000";
-			   
+
 		 }
 		 else {
 			 label.style.color = "#822";		
-	
+
 		 }  
-		
+
        	    tracks[actualTrack].tones.set({ playbackRate:v});	
 		 	tracks[actualTrack].rate[actualSample[actualTrack]] = v;				
-			
+
    });
-	
+
 	  const trackObject = {
 		id: target.id,
 		container: trackContainer,
 		elem: slider,
 		elemType:str
 		};
-	 
+
 	  tracks[actualTrack].nexus.push(trackObject);
 
 }
 
-
 function sampleStart(synth, str)
 {
- 
+
 	  const trackContainer  = document.getElementById("trackosc-" + actualTrack);
       let target = document.createElement('div');	  
 	  target.className = 'target';
 	  target.style.borderWidth = "0px";
-	  
-	  
+
       let label = document.createElement('div');	  
 	  label.className = 'target-label';    
 	  label.innerHTML = "Start";
 	  target.appendChild(label);	
-	  
+
 	  let countElem = tracks[actualTrack].nexus.length;
- 
-	  
+
 	  target.id = 'tone-' + actualTrack + "-" + countElem ;
 	  trackContainer.appendChild(target);
 
 	let lenSmp = 1;
 	if( tracks[actualTrack].sampleLen != null )lenSmp = tracks[actualTrack].sampleLen;
-	
-	
- 
-		 	
- 
+
       var slider = new Nexus.Slider('#' + target.id, {
 		     'size': [120,20],
 			'mode': 'absolut',  // 'relative' or 'absolute'
@@ -2704,46 +2203,42 @@ function sampleStart(synth, str)
        	    tracks[actualTrack].tones.set({ loopStart:v});	
 		  tracks[actualTrack].start[actualSample[actualTrack]] = v;	
    });
-	
+
 	  let trackObject = {
 		id: target.id,
 		container: trackContainer,
 		elem: slider,
 		elemType:str
 		};
-	 
+
 	  tracks[actualTrack].nexus.push(trackObject);
 
 }
 
-
 function sampleEnd(synth, str)
 {
- 
+
 	  const trackContainer  = document.getElementById("trackosc-" + actualTrack);
       let target = document.createElement('div');	  
 	  target.className = 'target';
 	  target.style.borderWidth = "0px";
-	  
-	  
+
       let label = document.createElement('div');	  
 	  label.className = 'target-label';    
 	  label.innerHTML = "End";
 	  target.appendChild(label);	
-	  
+
 	  let countElem = tracks[actualTrack].nexus.length;
- 
-	  
+
 	  target.id = 'tone-' + actualTrack + "-" + countElem ;
 	  trackContainer.appendChild(target);
-	
-	
+
 	let lenSmp = 1;
 	if( tracks[actualTrack].sampleLen != null )lenSmp = tracks[actualTrack].sampleLen;
-		
+
     	for(let i=0; i<8; i++)
 		{ tracks[actualTrack].end[i] = lenSmp;	}	
-	
+
       var slider = new Nexus.Slider('#' + target.id, {
 		     'size': [120,20],
 			'mode': 'absolut',  // 'relative' or 'absolute'
@@ -2754,23 +2249,21 @@ function sampleEnd(synth, str)
 		});
 
 	slider.on('change',function(v) {
-	  	
+
        	    tracks[actualTrack].tones.set({ loopEnd:v});	
 		   tracks[actualTrack].end[actualSample[actualTrack]] = v;		
    });
-	
-	
+
 	  let trackObject = {
 		id: target.id,
 		container: trackContainer,
 		elem: slider,
 		elemType:str
 		};
-	 
+
 	  tracks[actualTrack].nexus.push(trackObject);
 
 }
-
 
 function createNoise(synth, str)
 {
@@ -2778,49 +2271,37 @@ function createNoise(synth, str)
       const target = document.createElement('div');	  
 	  target.className = 'target';
 	  target.style.borderWidth = "0px";
-	  
-	  
+
       const label = document.createElement('div');	  
 	  label.className = 'target-label';    
 	  label.innerHTML = str;
 	  target.appendChild(label);	
-	  
+
 	  let countElem = tracks[actualTrack].nexus.length;
- 
-	  
+
 	  target.id = 'tone-' + actualTrack + "-" + countElem ;
 	  trackContainer.appendChild(target);
-	
- 
+
       var select = new Nexus.Select('#' + target.id, {
 		'size': [100,30],
 		  'options': noise
 		});
-	
-	 
- 		
 
 	select.on('change',function(v) {
        	    tracks[actualTrack].tones.set({ noise: {
 			type:v.value}});					
    });
-   	  
-  
-   
-   
-		
+
 	  const trackObject = {
 		id: target.id,
 		container: trackContainer,
 		elem: select,
 		elemType:str
 		};
-	 
- 
+
 	  tracks[actualTrack].nexus.push(trackObject);
 
 }
-
 
 function createOctaves(synth, str, vv )
 {
@@ -2828,20 +2309,17 @@ function createOctaves(synth, str, vv )
       const target = document.createElement('div');	  
 	  target.className = 'target';
 	  target.style.borderWidth = "0px";
-	  
-	  
+
       const label = document.createElement('div');	  
 	  label.className = 'target-label2';    
 	  label.innerHTML = str;
 	  target.appendChild(label);	
-	  
+
 	  let countElem = tracks[actualTrack].nexus.length;
- 
-	  
+
 	  target.id = 'tone-' + actualTrack + "-" + countElem ;
 	  trackContainer.appendChild(target);
-	
- 
+
 	var dial = new Nexus.Dial(target.id,{
 	  'size': [50,50],
 	  'interaction': 'radial',  
@@ -2851,27 +2329,23 @@ function createOctaves(synth, str, vv )
 	  'step': 0.01,
 	  'value': 800
 	})
-	
-	
+
 	dial.on('change',function(v) {
        	    tracks[actualTrack].tones.set({ octaves:v});	
-			//  console.log(tracks[actualTrack].tones.get());		
- 	
+
    });
-		
+
 	  const trackObject = {
 		id: target.id,
 		container: trackContainer,
 		elem: dial,
 		elemType:str
-		
+
 	  };
-	 
- 
+
 	  tracks[actualTrack].nexus.push(trackObject);
 
 }
-
 
 function createPlayRate(synth, str, vv )
 {
@@ -2879,20 +2353,17 @@ function createPlayRate(synth, str, vv )
       const target = document.createElement('div');	  
 	  target.className = 'target';
 	  target.style.borderWidth = "0px";
-	  
-	  
+
       const label = document.createElement('div');	  
 	  label.className = 'target-label2';    
 	  label.innerHTML = "Speed";
 	  target.appendChild(label);	
-	  
+
 	  let countElem = tracks[actualTrack].nexus.length;
- 
-	  
+
 	  target.id = 'tone-' + actualTrack + "-" + countElem ;
 	  trackContainer.appendChild(target);
-	
- 
+
 	var dial = new Nexus.Dial(target.id,{
 	  'size': [50,50],
 	  'interaction': 'radial',  
@@ -2902,28 +2373,24 @@ function createPlayRate(synth, str, vv )
 	  'step': 0.002,
 	  'value': 1
 	})
-	
-	
+
 	dial.on('change',function(v) {
        	    tracks[actualTrack].tones.set({ noise:
 				{ playbackRate:v }});	
-		
+
    });
-		
+
 	  const trackObject = {
 		id: target.id,
 		container: trackContainer,
 		elem: dial,
 		elemType:"filt"
-		
+
 	  };
-	 
- 
+
 	  tracks[actualTrack].nexus.push(trackObject);
 
 }
-
-
 
 function createXY(synth, str, vv )
 {
@@ -2931,23 +2398,17 @@ function createXY(synth, str, vv )
       const target = document.createElement('div');	  
 	  target.className = 'target';
 	  target.style.borderWidth = "0px";
-	  
-	  
+
       const label = document.createElement('div');	  
 	  label.className = 'target-label';    
 	  label.innerHTML = str;
 	  target.appendChild(label);	
-	  
+
 	  let countElem = tracks[actualTrack].nexus.length;
- 
-	  
+
 	  target.id = 'tone-' + actualTrack + "-" + countElem ;
 	  trackContainer.appendChild(target);
-	
-     
- 
-	
-	
+
 		var position = new Nexus.Position(target.id,{
 	  'size': [80,80],
 	  'mode': 'relative',  // "absolute" or "relative"
@@ -2960,60 +2421,40 @@ function createXY(synth, str, vv )
 	  'maxY': 8000,
 	  'stepY': 0.2
 	});
-		
-	
-	
+
 	position.on('change',function(v) {
- 
+
 		    tracks[actualTrack].tones.set({ filterEnvelope:{octaves:v.x} });		
 		    tracks[actualTrack].tones.set({ filterEnvelope:{baseFrequency:mapvalExp(v.y,20,8000,20,8000)} });	 
-			
-				//	  console.log(synth.get());		
+
    });
-		
+
 	  const trackObject = {
 		id: target.id,
 		container: trackContainer,
 		elem:position,
 		elemType:str
-		
+
 	  };
-	 
- 
+
 	  tracks[actualTrack].nexus.push(trackObject);
 
 }
 
-
 function initStyle()
 {
-	
+
 	document.body.style.backgroundColor = "#000";
 
 	Nexus.colors.accent = "#FF4400";
 	Nexus.colors.fill = "#551500";
 	Nexus.colors.light = "#FFF";	
 	Nexus.borderRadius = "20px";	
-	
+
 	Nexus.colors.dark = "#fff";
-	
-	
+
 	// accent, fill, dark, light, mediumDark, mediumLight
-	
-	// if(mobile)
-	// {
-	// document.getElementById('logo').style.width="100px";
-	// document.getElementById('logo').style.height="100px";	
-	  // logo.style.backgroundSize = "cover"; 
-    
-	// }	
 
-
-
- 	// drawCtrl();	
-	
-	 // if(piano == null)addPiano();
-	
    return;
 
 }
@@ -3021,11 +2462,11 @@ function initStyle()
 function loadSounds() {
     let templateNames = listSounds();
     document.getElementById("savesound").style.display = "block";
-  
+
     var len = templateNames.length;
     let soundlistElem = document.getElementById('soundlist');
     soundlistElem.innerHTML = "";
-  
+
     for (let i = 0; i < len; i++) {
         soundlistElem.innerHTML += 
             " &nbsp;- <span class='listitem' " +
@@ -3058,7 +2499,6 @@ function loadSharedSounds() {
     xhr.send(null);
 }
 
-
 function loadSharedSound(name) {
     let xhr = new XMLHttpRequest();
     xhr.open("GET", "sharedSounds/getSound.php?name=" + encodeURIComponent(name), true);
@@ -3066,12 +2506,11 @@ function loadSharedSound(name) {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
                 try {
-			 
-					
+
                     let soundData = JSON.parse(xhr.responseText);
 					console.log('in the routine ');
 	                 console.log(soundData);
-	 
+
                     loadSoundData(soundData, name);
 
                 } catch (e) {
@@ -3085,34 +2524,26 @@ function loadSharedSound(name) {
     xhr.send(null);
 }
 
-
 function loadSoundData(soundData, name) {
-    // tracks = soundData; // your code to update or replace current tracks
-    // currentSound = name;
-    
-    
+
 	console.log("load from shared : ");
 	console.log(soundData);
-	
+
 	  emptySounds();
 	  fillSounds(soundData);
-	
+
 	  document.getElementById("soundname").value = name;
-	
+
 	  currentSound = name;
-	
+
 	 flipSoundOn(true);
-	 
+
 	 closeListSounds();
-		
+
 }
-
-
-
 
 function loadSound(filename)
 {
-   // document.getElementById('loadsoundbt').style.background = "gold";	
     const myTemplates = JSON.parse(localStorage.getItem('mySounds')) || {};	
     const preset = myTemplates[filename];
 
@@ -3121,48 +2552,33 @@ function loadSound(filename)
         alert("Preset not found!");
         return;
     }
-	
+
 	  console.log("load from local : ");
 	  console.log(preset);
-	
+
 	emptySounds();
 	fillSounds(preset);
-	
+
 	document.getElementById("soundname").value = filename;
-	
+
 	currentSound = filename;
 
-	
         document.getElementById("savesound").style.display="none";	  	
-		
-	    // setTimeout(function() {
-        // document.getElementById('loadsoundbt').style.background = " linear-gradient(135deg, #3a3a3a 0%, #8c8cac 50%, #c0c0c0 100%)";
-    // }, 700);
-	
-	
 	flipSoundOn(true);
-	
+
 }
-
-
 
 function listSounds()
 {
- 
+
 	let myTemplates = JSON.parse(localStorage.getItem('mySounds')) || {};
-	
-	
+
 	return Object.keys(myTemplates);
- 	
+
 }
-
-
-
-
 
 function loadSound(filename)
 {
-   // document.getElementById('loadsoundbt').style.background = "gold";	
     const myTemplates = JSON.parse(localStorage.getItem('mySounds')) || {};	
     const preset = myTemplates[filename];
 
@@ -3171,63 +2587,44 @@ function loadSound(filename)
         alert("Preset not found!");
         return;
     }
-	
- 
-	
+
 	emptySounds();
 	fillSounds(preset);
-	
+
 	document.getElementById("soundname").value = filename;
-	
+
 	currentSound = filename;
 
-	
         document.getElementById("savesound").style.display="none";	  	
-		
-	    // setTimeout(function() {
-        // document.getElementById('loadsoundbt').style.background = " linear-gradient(135deg, #3a3a3a 0%, #8c8cac 50%, #c0c0c0 100%)";
-    // }, 700);
-	
-	
 	flipSoundOn(true);
-	
-}
 
+}
 
 function emptySounds()
 {
-	
+
 	CC.forEach((_, idx) => removeAllCCFX(idx));
 
-	
 	CC = [];
-	
-  // Tone.Transport.stop();
-  // Tone.Transport.cancel();
-  // Tone.Destination.mute = true;
-
- // Tone.Destination.disconnect();  
 
    tracks.forEach((elm,idx) => {	  
-  // console.log(elm);
-   
+
    let synth = elm.tones;
     if (synth.triggerRelease)synth.triggerRelease();
 	synth.disconnect();
     synth.dispose();
-	
+
 	let arr = elm.fx;
-	
+
 	 arr.forEach(node => {
       node.disconnect();
       node.dispose();
     });
-	
-	
+
 	arr = elm.nexus;
-	
+
 	 arr.forEach(component => {
-  
+
        if (!component) return;
 
 	  component.removeAllListeners?.(); 
@@ -3237,14 +2634,13 @@ function emptySounds()
 	  }
 
 	  component = null;
-  
+
     });
-	
-	
+
 	arr = elm.nexusFX;
-	
+
 	 arr.forEach(component => {
-  
+
        if (!component) return;
 
 	  component.removeAllListeners?.(); 
@@ -3254,12 +2650,11 @@ function emptySounds()
 	  }
 
 	  component = null;
-  
+
     });	
 
   }); 
-  
- 
+
   const existingPiano = document.getElementById('piano');
   if (existingPiano) {
     existingPiano.remove();
@@ -3267,136 +2662,92 @@ function emptySounds()
       piano.destroy();
     }
   }
-   
-  
+
   document.getElementById('mytracks').innerHTML = "";
   tracks=[];
 
-  
   trackCount = 0;
   actualTrack = 0;
   exActualTrack = 0;
   countFX = [];
-  
+
   currentSound = null;
-  
-  
-    
-  
-  
+
 }
-
-
 
 function fillSounds(preset)
 { 
 console.log(preset);
 
-	
  	Tone.Destination.mute = false;
-  
+
 	async function resumeAudioContext() {
 	  if (Tone.context.state !== 'running') {
 		await Tone.context.resume();
 	  }
 	}
-	 
-   resumeAudioContext();	
-  
-   Tone.Transport.start();  
-   
-	  
 
-	
-	
+   resumeAudioContext();	
+
+   Tone.Transport.start();  
+
   preset.forEach((elm,idx) => {
 
-	  
 	actualTrack = idx;
-	
+
 	flagChangeTone = false;
 	selectOsc(elm.tone,null,elm.sample);
-	
-	
+
 	    if (elm.loop) tracks[idx].loop = [...elm.loop];
         if (elm.start) tracks[idx].start = [...elm.start];
         if (elm.end) tracks[idx].end = [...elm.end];
         if (elm.rate) tracks[idx].rate = [...elm.rate];
         if (elm.sampleLen) tracks[idx].sampleLen = elm.sampleLen;
- 
-	
+
 	let allFX = elm.fx
-	
-	
+
 	allFX.forEach((elm,idy) => {
-		
+
 	 addFX(elm);
-	 
-		
+
 	}); 	
-	
-	 
 
 	let setTone = elm.valtone	
-	
+
 	setTone.forEach((elmy,idy) => {		
 		if( elmy instanceof Array )
 		{
 			 
 			elmy.forEach((elmz,idz) => {	
-				
+
 				let x = elmy[idz].x;
 				let y = elmy[idz].y;			 
 				tracks[idx].nexus[idy].elem.movePoint( idz, x, y )
-				
+
 			}); 	
-		
+
 		} 
-		// New check for boolean type
-		// else if (typeof elmy === 'boolean') {
-			// tracks[idx].nexus[idy].elem.state = elmy; // Nexus Toggles/Buttons use 'state'
-		// }
-		// Original catch-all (now the final else)
+
 		else { 
 			if( tracks[idx].tones.name != "Player" )tracks[idx].nexus[idy].elem.value = elmy;	
-			 		
+
 		}
 	});
-	
-	
- 
-	
-			// for(let i =0; i<8; i++) ***
-		// {
-		   // tracks[actualTrack].loop[i] = false;	
 
-		   // tracks[actualTrack].rate[i] = 1;		
-	
-		// }
-	 
-	
-	
 	let setFX = elm.valfx;
-	 
- 
+
 	setFX.forEach((elmy,idy) => {		
-	
+
 	    let arrFX = elmy;
 		arrFX.forEach((elmz,idz) => {	
-		
- 	     // console.log(tracks[idx].nexusFX[idy][idz]);
-		 // console.log(elmz);   
-		 
-		 
+
 			if( elmz instanceof Array )tracks[idx].nexusFX[idy][idz].elem.setPoints(elmz);
 			else tracks[idx].nexusFX[idy][idz].elem.value = elmz;
-				
+
 		}); 
 
 	}); 	
-	
-	 
- 
+
 		if( elm.vol < -22 )tracks[idx].tones.disconnect();
 		else  
 		{
@@ -3405,82 +2756,61 @@ console.log(preset);
 				tracks[idx].tones.toDestination();
 		   }
 		}
-			
+
 	    tracks[idx].tones.set({ volume:elm.vol}); 	 
- 
+
   }); 
- 
-   //if(piano == null)addPiano();
-  
-  
- 
+
 }
-
-
 
 function saveSounds()
 {
     let filename = document.getElementById("soundname").value.trim();
 	filename = filename.replace(" ","_");
-	   
+
     if (!filename) {
         alert("Please enter a valid filename.");
         return;
     }	   
 
 	currentSound = filename;
-  
+
     const tracksParams = tracks.map(track => extractTrackParams(track));
 
- 
     let myTemplates = JSON.parse(localStorage.getItem('mySounds')) || {};
 
- 
     myTemplates[filename] = tracksParams;
 
- 
     localStorage.setItem('mySounds', JSON.stringify(myTemplates));
 
-  
     console.log(tracksParams);
-  
-    // document.getElementById("savesoundbt").style.background = "red";
-	
-    // setTimeout(() => {
-        // document.getElementById("savesoundbt").style.background = "linear-gradient(135deg, #3a3a3a 0%, #8c8cac 50%, #c0c0c0 100%)";
-    // }, 700);
-	
-}
 
+}
 
 function shareSounds() {
     let filename = document.getElementById("soundname").value.trim();
     filename = filename.replace(" ", "_");
-    
+
     if (!filename) {
         alert("Please enter a valid filename.");
         return;
     }
-    
+
     const tracksParams = tracks.map(track => extractTrackParams(track));
-    
+
     let myTemplates = JSON.parse(localStorage.getItem('mySounds')) || {};
-    
+
     myTemplates[filename] = tracksParams;
-    
-    // Update localStorage (optional if you want to keep the local copy updated)
-   //  localStorage.setItem('mySounds', JSON.stringify(myTemplates));
-    
-    // Prepare data to send: JSON object with the single sound entry
+
     let dataToSend = {};
     dataToSend[filename] = tracksParams;
-	
+
 	  console.log(tracksParams);
-    
+
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "sharedSounds/saveSound.php", true);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    
+
     xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
@@ -3490,43 +2820,12 @@ function shareSounds() {
             }
         }
     };
-    
+
     xhr.send(JSON.stringify(dataToSend));
-	
+
 }
 
-
 function extractTrackParams(track) {
-     // let fx = track.nexusFX.map(nex => nex.elem.value);
- 
-   // let arr = track.nexusFX;
-   
-   // let arrVal = [];
-   
-   // for(let i = 0; i<arr.length; i++)
-   // {
-	  // arrVal[i] = arr[i].map(nex=> {
-	  // if (nex.elem.value !== undefined) {
-		// return nex.elem.value;
-	  // } 
-	  // else if (nex.elem.points) {
-		// return nex.elem.points; // For matrix-based components
-	  // } 
-	 
-	  // else if (typeof nex.elem.getValue === 'function') {
-		// return nex.elem.getValue();
-	  // }
- 
-	  // return undefined;
-	// }); 	   
-	   
-   // }
-   
-   
- let fx = track;
-   
- 
-	
    return {
 	 sample: track.sample || null,
 	 sampleLen:track.sampleLen,
@@ -3541,25 +2840,19 @@ function extractTrackParams(track) {
 		return nex.elem.value;
 	  } 
 	  else if (nex.elem.state !== undefined && typeof nex.elem.state === 'boolean') {
-	   // console.log(nex);
 		return nex.elem.state;
 	  }	  
 	  else if (nex.elem.points) {
 		 	return nex.elem.points; 
-		 //return nex.elem.points.map(({ x, y }) => ({ x, y }));
 	  } 
- 
+
 	  else if (typeof nex.elem.getValue === 'function') {
 		return +nex.elem.getValue();
 	  }
- 
+
 	  return undefined;
 	}),
-	
-	
-	
-	
-	
+
 	valfx:track.nexusFX?.map(innerArray => 
         innerArray?.map(nex => {
             const elem = nex?.elem;
@@ -3575,28 +2868,23 @@ function extractTrackParams(track) {
              return elem;
         })?.filter(val => val !== null) ?? []
     )?.filter(arr => arr.length > 0) ?? [],
-	
+
 	  vol:track.vol.values[0]
 
    };
-   
-   
+
 }
-
-
 
 function closeListSounds()
 {
-	
-  document.getElementById("savesound").style.display="none";	
-	
-}
 
+  document.getElementById("savesound").style.display="none";	
+
+}
 
 function soundCC( dt1, dt2, dt3 )
 {
-	 
-	
+
 	let vv = dt1 - 176;
 	let fx = Math.floor(dt2 / 10);
     let set = dt2 % 10;
@@ -3604,22 +2892,17 @@ function soundCC( dt1, dt2, dt3 )
     if( dt2 >= 10 )
 	{
 		fx = fx - 1;
-		
+
 		let theCC = CC?.[vv]?.[fx]?.[set];
 
- 
-		 
 		if( theCC )
 		{   
 		 tracks[vv].nexusFX[fx][set].elem.value =
 		 mapval( dt3 , 0 , 127 , tracks[vv].nexusFX[fx][set].elem._value.min , tracks[vv].nexusFX[fx][set].elem._value.max);
 		}	
-		
-	}
- 
 
-  //	CC[actualTrack][countFX[actualTrack]][countBt] = paramName;
-	
+	}
+
 }
 
 let xyPos = null;
@@ -3631,7 +2914,7 @@ let xyBox = null;
 function drawCtrl()
 {
 	return;
- 
+
 	  xyPos = new Nexus.Position('#xypos',{
 	  'size': [120,120],
 	  'mode': 'relative',  // "absolute" or "relative"
@@ -3644,7 +2927,6 @@ function drawCtrl()
 	  'maxY': 2.8,
 	  'stepY': 0.01
 	});
-
 
 	  xySize = new Nexus.Position('#xysize',{
 	  'size': [120,120],
@@ -3659,39 +2941,29 @@ function drawCtrl()
 	  'stepY': 0.1
 	});
 
-
 let countChangeXY = 2;
 let _ignoreXYChange = false;
 let _ignoreSZChange = false;
 
- 
  xyPos.on('change',function(v) {
-	 
+
 	 if (_ignoreXYChange) return; 
-	 	 
-	 
-	//if(countChangeXY>0){countChangeXY = countChangeXY -1;   return;} 
- 
-  	
+
 	xBar[selBoneBar] = v.x;
-	
+
  	yBar[selBoneBar] = mapval(v.y, -1.2, 2.8, 2.8, -1.2);	
-  
- //  console.log("s : " + selBoneBar +" " +  mapval(v.y, -1.2, 2.8, 2.8, -1.2) );
- 
+
  });
 
  xySize.on('change',function(v) {
-	 
+
 	if( _ignoreSZChange ) return; 
-   
+
    	widthBar[selBoneBar] = v.x;
 	heightBar[selBoneBar] = 1 - v.y;
- 
 
  });	
-	
-	
+
 	  xyMan = new Nexus.Position('#xyman',{
 	  'size': [120,120],
 	  'mode': 'relative',  // "absolute" or "relative"
@@ -3704,14 +2976,13 @@ let _ignoreSZChange = false;
 	  'maxY': 127,
 	  'stepY': 0.01
 	});
-	
+
 	 xyMan.on('change',function(v) {
-		 
+
       setCam(0,v.x);
 	  setCam(1,v.y);
-	 
-	});	
 
+	});	
 
 	  xyBox= new Nexus.Position('#xybox',{
 	  'size': [120,120],
@@ -3725,36 +2996,33 @@ let _ignoreSZChange = false;
 	  'maxY':3.6,
 	  'stepY': 0.01
 	});
-	
+
 	 xyBox.on('change',function(v) {
-   
+
 	  facteurX = 1.8 - v.x;
 	  facteurY = 1.8 - v.y;
-	
+
 	});		
-	
+
 }
-
-
 
 function mapval(value, fromMin, fromMax, toMin, toMax) 
 {
-  
-  let percentage = (value - fromMin) / (fromMax - fromMin);
-  
-  let ret = Number(toMin + percentage * (toMax - toMin));
-  
-  return ret;
-  
-}
 
+  let percentage = (value - fromMin) / (fromMax - fromMin);
+
+  let ret = Number(toMin + percentage * (toMax - toMin));
+
+  return ret;
+
+}
 
  function mapvalExp2(value, fromMin, fromMax, toMin, toMax, exp = 1.05) {
     let percentage = (value - fromMin) / (fromMax - fromMin); // Normalize between 0 and 1
     percentage = 1 - Math.pow(1 - percentage, exp); // Apply exponential scaling, favoring lower values
-	
+
 	  console.log( value  +  " exp " +  (toMin + percentage * (toMax - toMin)) ) ;
-	
+
     return toMin + percentage * (toMax - toMin);
 }
 
@@ -3769,21 +3037,15 @@ function mapvalExp(value, fromMin, fromMax, toMin, toMax, exp = 2.6) {
   // Map back to target range
   const result = toMin + shaped * (toMax - toMin);
 
- // console.log(value + " -> " + result);
   return result;
 }
-
-
- 
 
 function mapvalLog(value, fromMin, fromMax, toMin, toMax, base = 10) {
   let percentage = (value - fromMin) / (fromMax - fromMin);
   percentage = Math.log1p(percentage * (base - 1)) / Math.log(base);
-  
- // console.log( value  +  " log " +  (toMin + percentage * (toMax - toMin)) ) ;
+
   return toMin + percentage * (toMax - toMin);
 }
-
 
 function newSounds() {
     // Clear all existing sounds/tracks
@@ -3795,23 +3057,16 @@ function newSounds() {
 
     currentSound = null; // Reset currentSound tracker
 
-    // Optionally hide save button etc.
     const saveButton = document.getElementById("savesound");
     if (saveButton) saveButton.style.display = "none";
 
-    // Add piano back (optional: depends if you want to start with piano)
     if (piano == null) addPiano();
-	
-	
-	
+
 		flagNewTone = false;	
 			flipNewTone(0);
-		
-		
+
 	flipSoundOn(true);
 }
-
-
 
 function deleteSounds() {
     const soundNameInput = document.getElementById("soundname");
@@ -3878,60 +3133,44 @@ function deleteSounds() {
     newSounds();
 }
 
-
-
-
-
 function flipSoundOn(st)
 {
 	flagSoundOn = st;
-	
+
 	if(st == true)
 	{
 		if(trackCount == 0)
 		{
 			flagNewTone = false;	
 			flipNewTone(0);
-				
-		}
-		
-        if(!soundInit)initTone();
-		 
-		
-	     
 
-       //  loadPreset();
-		 
+		}
+
+        if(!soundInit)initTone();
+
 		 document.getElementById("sound").style.display="";
 	}
 	else document.getElementById("sound").style.display = "none";
-	
-	
+
 }
-
-
-
-
 
 function changeCCFX(ch,nn,val,id)
 {
- 
+
 	let sel = document.getElementById(id);
-	
+
 	let idx = -1;
 	  for (let i = 0; i < sel.options.length; i++) {
 		if (sel.options[i].value === val) {
 		  idx = i;  
 		}
 	  }	
-	 
- 
+
   let selectedOption = sel.options[idx];
-     
-  
+
   let bgColor = window.getComputedStyle(selectedOption).backgroundColor;
   sel.style.backgroundColor = bgColor;
-  
+
   if(val!=0)sel.style.color="white";
   else
   {
@@ -3941,13 +3180,11 @@ function changeCCFX(ch,nn,val,id)
 
 	val=Number( val );
 
-  
     changeCC( ch,nn,val );
-	
-    document.getElementById(ch+"cc"+nn).value = val;
-  
-} 
 
+    document.getElementById(ch+"cc"+nn).value = val;
+
+} 
 
 function adCCFX( track,fx,bt,param,color)
 {
@@ -3956,55 +3193,53 @@ function adCCFX( track,fx,bt,param,color)
 	  {	
 			let sel = document.getElementById(track + 1 + "ccfx" + i);
 			if (!sel) continue;
-			
+
 			let option = document.createElement("option");
 			option.value = 10 + (10 * fx) + bt;
 			option.text = param;
 			option.style.backgroundColor = color;
-			
-			sel.appendChild(option);
-			
-			sel.disabled = false;
-			
-	  }		
-	
-}
 
+			sel.appendChild(option);
+
+			sel.disabled = false;
+
+	  }		
+
+}
 
 function removeCCFX(track,fx)
 {
 	removeAllCCFX(track);
 
 	let len = CC[track].length;
-	
+
 	  for (let i = 0; i < len; i++) 
 	  {	
           let len2=CC[track][i].length;
-		  
+
 			for (let j = 0; j < len2; j++) 
 	        {		
 	            adCCFX( track,i,j,CC[track][i][j],tracks[track].nexusColor[i]);
 
 		    }
-		   
+
 	  }
 
 }
 
-
 function removeAllCCFX(track)
 {
 	track = track + 1;
-	
+
 	  for (let i = 1; i <= 4; i++) 
 	  {	
 			let sel = document.getElementById(track  + "ccfx" + i);
-			
+
 			    if (!sel) {
-     
+
 				  continue;
 				}
-			
+
 			while (sel.options.length > 1) 
 			{
                sel.remove(1);  
@@ -4016,72 +3251,64 @@ function selectSound(str,el)
 {
 	  const val = el.value;
       if (!val) return; // Ignore dummy option
-	
+
 	if(str == "load")loadSounds()
     else if(str == "save")saveSounds()
     else if(str == "delete")deleteSounds()		
     else if(str == "new")newSounds()	
 	 else if(str == "share")shareSounds()		
-		
+
 	el.value = "";
-		
+
 }
 
 function chooseCCminmax(ch,nn)
 {
 
 	document.getElementById("minccval"+ch).innerHTML = nn;
-	
+
 	document.getElementById("mincc"+ch).value = arrCCmin[ch-1][nn-1];
 	document.getElementById("maxcc"+ch).value = arrCCmax[ch-1][nn-1];	
-	
+
 }
-
-
 
 function minCC(ch,val)
 {	
 	val = Number(val);
-	
-	let nn = Number(document.getElementById("minccval"+ch).innerHTML);
-	
 
-	
+	let nn = Number(document.getElementById("minccval"+ch).innerHTML);
+
 	ch = ch -1;
 	nn=nn-1;
-	
+
 	arr=[143,112 + (4 * ch) + nn ,val];
 	sendMidiUsb(arr);	
-	
+
 	arrCCmin[ch][nn] = val;
-	
+
 }
 
 function maxCC(ch,val)
 {
 	val = Number(val);	
-	
+
 	let nn = Number(document.getElementById("minccval"+ch).innerHTML);
-	
+
 	console.log(ch,nn,val);
-	
+
 		ch = ch -1;
 	nn=nn-1;
-	
+
 	arr=[143, 52 + (4 * ch) + nn ,val];
 	sendMidiUsb(arr);	
-	
+
     arrCCmax[ch][nn] = val;
-	
+
 }
-
-
-///////////////////SAMPLES//////////
 
 const dbName = 'localSamplesDB';
 const storeName = 'samples';
 let db;
-
 
 // Make these functions globally accessible
 window.saveSampleToDB = async (file) => {
@@ -4112,7 +3339,7 @@ window.getAllLocalSamples = async () => {
     request.onerror = () => reject(request.error);
   });
 };
- 
+
 window.openDB = () => {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(dbName, 1);
@@ -4129,9 +3356,6 @@ window.openDB = () => {
     };
   });
 };
-
-
-
 
 // --- Wait until DOM is ready ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -4169,18 +3393,16 @@ const saveSampleToDB = async (file) => {
 
     const request = store.put(data);
     request.onsuccess = () => {
-     // console.log('Sample saved to DB:', storeName);  // ✅ logs
       resolve(true);
     };
     request.onerror = () => reject(request.error);
   }).then(() => {
-    
+
 	let nm = file.name.split("."); 
 	console.log(nm[0]);
     closeSamplePage(); // ✅ will run
   });
 };
-
 
   const getSampleFromDB = async (name) => {
     await openDB();
@@ -4192,7 +3414,7 @@ const saveSampleToDB = async (file) => {
       request.onerror = () => reject(request.error);
     });
   };
-  
+
    window.getSampleFromDB = getSampleFromDB;
    window.getSampleFromDB = getSampleFromDB;
 
@@ -4233,7 +3455,7 @@ const saveSampleToDB = async (file) => {
     div.textContent = name;
 
     div.addEventListener('click', async () => {
-   
+
       await loadSample(type, filename || name);
     });
 
@@ -4273,9 +3495,7 @@ const saveSampleToDB = async (file) => {
     // SHARED SAMPLES
     try {
       const resp = await fetch('samples/sample_list.php');
-	  
-	//  console.log(resp);
-	  
+
       const sharedSamples = await resp.json();
       if (sharedSamples.length) {
         const h3 = document.createElement('h3'); h3.textContent = 'Shared Samples'; container.appendChild(h3);
@@ -4323,7 +3543,7 @@ const saveSampleToDB = async (file) => {
   }
 
   // --- Load sample into Tone.Player ---
-  
+
 async function loadSample(type, filename) {
   return new Promise(async (resolve, reject) => { // <-- Wrap in Promise
     let url;
@@ -4336,7 +3556,7 @@ async function loadSample(type, filename) {
       url = URL.createObjectURL(blob);
     } else {
       url = 'samples/' + filename;
-      // ... (rest of the local DB storage logic remains the same)
+
       const localSamples = await getAllLocalSamples();
       const realName = filename.split('_sp_').slice(1).join('-');
       if (!localSamples.includes(realName)) {
@@ -4347,32 +3567,17 @@ async function loadSample(type, filename) {
     }
 
     const nameWithoutExt = filename.replace(/^.*_sp_/, '').replace(/\.[^/.]+$/, '');
-    
+
     let justName = filename.split("_sp_");
     if(justName.length > 1)justName = justName[1];
     else justName = filename;
-          
-    // tracks[actualTrack].tones = new Tone.Player({
-      // url,
-      // onload: () => {
-        // sampleLoaded(actualTrack);
-        // resolve(tracks[actualTrack].tones); 
-      // onerror: (e) => {  
-        // console.error("Tone.Player Error:", e);
-        // reject(e);
-      // }
-    // }).toDestination();
-	
-	
+
 	    tracks[actualTrack].tones.load( 
       url, () => {
         sampleLoaded(actualTrack);
-       // resolve(tracks[actualTrack].tones); // <-- Resolve the Promise here!
       });
-    
+
     tracks[actualTrack].sample = justName;
-    
- 
 
     closeSamplePage();	
     console.log( "mySample-" + actualTrack );
@@ -4381,7 +3586,7 @@ async function loadSample(type, filename) {
 
   }); // End of new Promise
 }
- 
+
   window.loadSample = loadSample;
 
   // --- Sample page control ---
@@ -4397,15 +3602,12 @@ async function loadSample(type, filename) {
 
 });
 
-
-
-
 async function swapSample(type, filename) {
     // We no longer wrap the entire function in a new Promise, 
     // because the 'async' function implicitly returns a Promise.
-    
+
     let url;
-    // ... (Your logic to determine 'url' and save to DB remains here) ...
+
     if (type === 'local') {
         const blob = await getSampleFromDB(filename);
         if (!blob) {
@@ -4415,33 +3617,30 @@ async function swapSample(type, filename) {
         url = URL.createObjectURL(blob);
     } else {
         url = 'samples/' + filename;
-        // ... (Local DB storage logic) ...
+
     }
 
     const nameWithoutExt = filename.replace(/^.*_sp_/, '').replace(/\.[^/.]+$/, '');
     let justName = filename.split("_sp_");
     if(justName.length > 1) justName = justName[1];
     else justName = filename;
-    
-    // --- The Crucial Change ---
+
     try {
         console.log("swap: Loading started...");
-        
+
         // Use await player.load(url). This is what causes the function 
         // to pause until loading is complete (success or failure).
         await tracks[actualTrack].tones.load(url);
-        
-        // --- This code runs ONLY after the sample is fully loaded and decoded ---
+
         console.log("swap-resolve: Sample loaded successfully!");
         sampleLoaded(actualTrack,"load"); // <-- **Now it fires correctly!**
 
     } catch (error) {
         console.error("Tone.Player load failed:", error);
-        // You can throw or return false here to indicate failure
+
         return false; 
     }
-    // -------------------------
-    
+
     tracks[actualTrack].sample = justName;
     console.log(tracks[actualTrack].sample);
 
@@ -4449,8 +3648,7 @@ async function swapSample(type, filename) {
     console.log("mySample-" + actualTrack);
     const elem = document.getElementById("mySample-" + actualTrack);
     if (elem) elem.textContent = nameWithoutExt;
-    
-    // If the function completes, it resolves the original Promise returned by 'async'
+
     return tracks[actualTrack].tones; 
 }
 
@@ -4465,39 +3663,32 @@ function patchNexusUIConstructors() {
             // A. Call the original constructor to create the component
             const component = new OriginalConstructor(...args);
 
-            // B. --- ATTACH GLOBAL LISTENER HERE ---
+            // Attach the global listener here
 
             // 1. Get the container element (the parent of the created Nexus Canvas/SVG)
             const containerElement = component.element.parentElement;
-            
+
             // 2. Prioritize the container's ID, then Nexus's internal label/type
             const componentId = containerElement && containerElement.id
                 ? containerElement.id  // <--- The ID you want
                 : component.label || component.type;
-				
+
 				let spl = componentId.split("-");
 				let id = "valu-" + spl[1];
 				let elm = document.getElementById(id);
 
             component.on('change', (value) => {
-                // console.log(`\n\n📡 AUTO-LOG: ${type} Change`);
-                // console.log(`   ID:    ${componentId}`); // <-- Logs the container ID
-				
+
 				let vv = value;
 				if (Array.isArray(value))vv = value[0];
-				
-				//console.log(value);
+
 				let val = vv.toFixed(2);
 				if(value>9.99)val = vv.toFixed(0);
 				elm.innerHTML = val;
-                
+
                 const logValue = typeof value === 'object' ? JSON.stringify(value) : value;
-                // console.log(`   VALUE: ${logValue}`);
-				
-				
-				
+
             });
-            // ------------------------------------
 
             return component;
         };
@@ -4514,7 +3705,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // A small timeout ensures Nexus UI itself has finished initializing.
     setTimeout(patchNexusUIConstructors, 50); 
 });
-
 
  initStyle();
 
@@ -4643,6 +3833,3 @@ window.UltraSoundEngine = {
         };
     }
 };
-
-
-

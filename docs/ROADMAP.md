@@ -38,5 +38,6 @@
 ## Code Cleanup
 
 - Identify old Ultragear controller-specific files.
+- Keep legacy ESP32/WebSocket/controller experiments as future adapters, not commented-out code inside the public sound-engine source.
 - Keep the working demo stable during cleanup.
 - Avoid heavy build tooling unless it clearly helps.
